@@ -1,0 +1,1813 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HBD & good night saba</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&family=Lalezar&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================================
+       متغیرهای رنگ — اگر می‌خوای تم رو عوض کنی اینجا تغییر بده
+       ============================================================ */
+    :root {
+      --re-dark: #0a0a0a;
+      --re-darker: #050505;
+      --re-blood: #8b0000;
+      --re-blood-bright: #c41e1e;
+      --re-gold: #c9a84c;
+      --re-gold-dim: #8a7330;
+      --re-text: #d4d4d4;
+      --re-text-dim: #6b6b6b;
+      --re-herb-green: #2d5a27;
+      --re-herb-red: #8b1a1a;
+      --umbrella-red: #c41e3a;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Vazirmatn', sans-serif;
+      background-color: var(--re-darker);
+      color: var(--re-text);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0a0a0a; }
+    ::-webkit-scrollbar-thumb { background: #3a1a1a; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #5a2a2a; }
+
+    /* انیمیشن‌ها */
+    @keyframes flicker {
+      0%, 100% { opacity: 1; }
+      41% { opacity: 1; } 42% { opacity: 0.3; } 43% { opacity: 1; }
+      45% { opacity: 0.5; } 46% { opacity: 1; }
+      77% { opacity: 1; } 78% { opacity: 0.2; } 79% { opacity: 1; }
+    }
+    @keyframes bloodPulse {
+      0%, 100% { box-shadow: 0 0 20px rgba(139, 0, 0, 0.3); }
+      50% { box-shadow: 0 0 40px rgba(196, 30, 30, 0.5); }
+    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes scaleIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+      20%, 40%, 60%, 80% { transform: translateX(5px); }
+    }
+    @keyframes scanline {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(100vh); }
+    }
+    @keyframes staticNoise {
+      0% { background-position: 0 0; }
+      100% { background-position: 100% 100%; }
+    }
+    @keyframes glow {
+      0%, 100% { text-shadow: 0 0 10px rgba(201, 168, 76, 0.3); }
+      50% { text-shadow: 0 0 25px rgba(201, 168, 76, 0.6), 0 0 40px rgba(201, 168, 76, 0.2); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    @keyframes blink {
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0; }
+    }
+
+    .animate-flicker { animation: flicker 4s infinite; }
+    .animate-fade-in { animation: fadeIn 0.8s ease forwards; }
+    .animate-fade-in-up { animation: fadeInUp 0.6s ease forwards; }
+    .animate-scale-in { animation: scaleIn 0.5s ease forwards; }
+    @keyframes tgVideoZoomIn {
+      from { opacity: 0; transform: scale(0.5); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes tgVideoOverlayIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    #video-lightbox.tg-opening { animation: tgVideoOverlayIn 0.22s ease forwards; }
+    #video-lightbox.tg-opening #video-lightbox-inner { animation: tgVideoZoomIn 0.28s cubic-bezier(0.2,0.9,0.3,1) forwards; }
+    .chat-video-card { transition: transform 0.12s ease; }
+    .chat-video-card:active { transform: scale(0.97); }
+    .animate-shake { animation: shake 0.5s; }
+    .animate-glow { animation: glow 3s infinite ease-in-out; }
+    .animate-pulse-slow { animation: pulse 2s infinite ease-in-out; }
+    .animate-blink { animation: blink 1s infinite; }
+
+    .delay-100 { animation-delay: 0.1s; opacity: 0; }
+    .delay-200 { animation-delay: 0.2s; opacity: 0; }
+    .delay-300 { animation-delay: 0.3s; opacity: 0; }
+    .delay-400 { animation-delay: 0.4s; opacity: 0; }
+    .delay-500 { animation-delay: 0.5s; opacity: 0; }
+
+    /* افکت‌های پس‌زمینه */
+    .scanline-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none; z-index: 9999;
+      background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.05) 50%, transparent 100%);
+      background-size: 100% 4px;
+      animation: scanline 8s linear infinite;
+    }
+    .noise-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none; z-index: 9998; opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      animation: staticNoise 0.2s steps(2) infinite;
+    }
+    .vignette {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none; z-index: 9997;
+      background: radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.7) 100%);
+    }
+
+    .classified-stamp {
+      display: inline-block;
+      border: 3px solid var(--re-blood-bright);
+      color: var(--re-blood-bright);
+      font-weight: 900;
+      padding: 4px 16px;
+      letter-spacing: 4px;
+      transform: rotate(-12deg);
+      opacity: 0.8;
+      text-transform: uppercase;
+    }
+
+    /* Umbrella Corporation logo (CSS pure) */
+    .umbrella-logo {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: conic-gradient(
+        from 0deg,
+        #c41e3a 0deg 45deg,
+        #fff 45deg 90deg,
+        #c41e3a 90deg 135deg,
+        #fff 135deg 180deg,
+        #c41e3a 180deg 225deg,
+        #fff 225deg 270deg,
+        #c41e3a 270deg 315deg,
+        #fff 315deg 360deg
+      );
+      box-shadow: 0 0 12px rgba(196, 30, 58, 0.5);
+      position: relative;
+    }
+    .umbrella-logo::after {
+      content: '';
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      background: #0a0a0a;
+      border-radius: 50%;
+    }
+    .umbrella-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      color: #c41e3a;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .stars-badge {
+      display: inline-block;
+      border: 1px solid #c9a84c;
+      color: #c9a84c;
+      font-size: 0.65rem;
+      padding: 2px 8px;
+      letter-spacing: 0.2em;
+      font-weight: 700;
+    }
+    .typewriter-box {
+      background: #1a1510;
+      border: 2px solid #5c4033;
+      box-shadow: inset 0 0 30px rgba(0,0,0,0.6);
+      font-family: 'Lalezar', 'Vazirmatn', sans-serif;
+    }
+    .ink-ribbon {
+      color: #8b1a1a;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+    }
+    .herb-dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin: 0 2px;
+    }
+    .herb-green { background: #2d5a27; box-shadow: 0 0 6px #2d5a27; }
+    .herb-red { background: #8b1a1a; box-shadow: 0 0 6px #8b1a1a; }
+    .biohazard-watermark {
+      position: absolute;
+      opacity: 0.04;
+      font-size: 12rem;
+      pointer-events: none;
+      user-select: none;
+      z-index: 0;
+    }
+
+    /* دفترچه خاطرات — ظاهر کاغذی */
+    .diary-book {
+      background: linear-gradient(135deg, #2a1f14 0%, #1a120c 100%);
+      border: 3px solid #5c4033;
+      border-radius: 4px 12px 12px 4px;
+      box-shadow:
+        8px 8px 24px rgba(0,0,0,0.7),
+        inset -4px 0 12px rgba(0,0,0,0.3);
+      position: relative;
+    }
+    .diary-page {
+      background:
+        linear-gradient(90deg, rgba(139,90,43,0.08) 0%, transparent 8%),
+        repeating-linear-gradient(
+          transparent,
+          transparent 27px,
+          rgba(139, 90, 43, 0.15) 28px
+        ),
+        #f4e8d0;
+      color: #3d2b1f;
+      min-height: 320px;
+      padding: 1.5rem 1.75rem 1.5rem 2.25rem;
+      position: relative;
+      box-shadow: inset 0 0 40px rgba(139,90,43,0.1);
+      font-family: 'Vazirmatn', Georgia, serif;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+    .diary-page.flip-out {
+      opacity: 0;
+      transform: translateX(-20px) rotateY(-8deg);
+    }
+    .diary-page.flip-in {
+      animation: diaryFlipIn 0.35s ease forwards;
+    }
+    @keyframes diaryFlipIn {
+      from { opacity: 0; transform: translateX(20px) rotateY(8deg); }
+      to { opacity: 1; transform: translateX(0) rotateY(0); }
+    }
+    .diary-lines {
+      white-space: pre-wrap;
+      line-height: 28px;
+      font-size: 0.95rem;
+    }
+    .diary-spine {
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 12px;
+      background: linear-gradient(90deg, #4a3224, #2a1f14);
+      border-radius: 0 8px 8px 0;
+    }
+    .diary-nav-btn {
+      background: #3d2b1f;
+      color: #f4e8d0;
+      border: 1px solid #5c4033;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.85rem;
+      transition: background 0.2s;
+    }
+    .diary-nav-btn:hover:not(:disabled) {
+      background: #5c4033;
+    }
+    .diary-nav-btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    .keypad-btn { transition: all 0.15s; user-select: none; }
+    .keypad-btn:active {
+      transform: scale(0.92);
+      background: var(--re-blood) !important;
+    }
+
+    .hotspot {
+      position: absolute; width: 40px; height: 40px;
+      border-radius: 50%; cursor: pointer; z-index: 10;
+    }
+    .hotspot::before {
+      content: ''; position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%); width: 20px; height: 20px;
+      border-radius: 50%; background: rgba(196, 30, 30, 0.6);
+      animation: pulse 2s infinite;
+    }
+    .hotspot::after {
+      content: ''; position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%); width: 40px; height: 40px;
+      border-radius: 50%; border: 2px solid rgba(196, 30, 30, 0.4);
+      animation: pulse 2s infinite;
+    }
+
+    .telegram-chat { background: #0e1621; }
+    .telegram-bubble-in {
+      background: #182533;
+      border-radius: 12px 12px 12px 4px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    }
+    .telegram-bubble-out {
+      background: #2b5278;
+      border-radius: 12px 12px 4px 12px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    }
+
+    .cctv-feed {
+      filter: grayscale(0.7) contrast(1.2) brightness(0.6);
+      position: relative;
+    }
+    .cctv-feed::after {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: linear-gradient(transparent 50%, rgba(0,255,0,0.03) 50%);
+      background-size: 100% 3px; pointer-events: none;
+    }
+
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    ::selection { background: var(--re-blood); color: #fff; }
+
+    /* لایه‌های صفحه */
+    .screen { display: none; min-height: 100vh; }
+    .screen.active { display: block; }
+
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 50;
+      display: flex; align-items: center; justify-content: center;
+      padding: 1rem; background: rgba(0,0,0,0.85); overflow-y: auto;
+      animation: fadeIn 0.3s ease;
+    }
+    .modal-overlay.hidden { display: none; }
+
+    /* آیکون‌های SVG ساده (جای lucide-react) */
+    .icon { width: 1em; height: 1em; display: inline-block; vertical-align: middle; }
+    .icon-lg { width: 1.5em; height: 1.5em; }
+    .icon-xl { width: 2em; height: 2em; }
+    .icon-2xl { width: 3em; height: 3em; }
+    .icon-3xl { width: 4em; height: 4em; }
+  </style>
+</head>
+<body>
+  <!-- افکت‌های پس‌زمینه همیشه فعال -->
+  <div class="scanline-overlay"></div>
+  <div class="noise-overlay"></div>
+  <div class="vignette"></div>
+
+  <!-- ============================================================
+       صفحه ۱: اینترو
+       متن‌ها و عکس پس‌زمینه را اینجا تغییر بده
+       ============================================================ -->
+  <div id="screen-intro" class="screen active">
+    <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem;position:relative;overflow:hidden;">
+      <!-- عکس پس‌زمینه اینترو — آدرس عکس را عوض کن -->
+      <div style="position:absolute;inset:0;background-size:cover;background-position:center;opacity:0.2;
+        background-image:url('https://images.pexels.com/photos/12036095/pexels-photo-12036095.jpeg?auto=compress&cs=tinysrgb&h=650&w=940');"></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.8),rgba(0,0,0,0.6),rgba(0,0,0,0.9));"></div>
+
+      <div style="position:relative;z-index:10;max-width:42rem;text-align:center;">
+        <div class="animate-fade-in" style="margin-bottom:2rem;">
+          <!-- لوگو Umbrella + عنوان -->
+          <div style="display:flex;justify-content:center;margin-bottom:1rem;">
+            <div class="umbrella-logo" title="Umbrella Corporation"></div>
+          </div>
+          <div class="animate-flicker" style="font-size:clamp(2.5rem,8vw,4.5rem);font-weight:900;letter-spacing:0.1em;color:#991b1b;margin-bottom:0.5rem;">
+            پرونده ناشناس
+          </div>
+          <div style="font-size:0.875rem;letter-spacing:0.5em;color:#6b7280;text-transform:uppercase;">
+            UMBRELLA CORP. — CLASSIFIED
+          </div>
+          <div class="umbrella-badge" style="justify-content:center;margin-top:0.75rem;">
+            <span>Our Business is Life Itself</span>
+          </div>
+          <div style="margin-top:1rem;height:1px;width:8rem;margin-left:auto;margin-right:auto;background:linear-gradient(to right,transparent,#991b1b,transparent);"></div>
+        </div>
+
+        <!-- متن‌های اینترو اینجا نمایش داده می‌شوند (از data/story.ts) -->
+        <div id="intro-lines" style="min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;"></div>
+
+        <button id="btn-intro-continue" style="display:none;margin-top:3rem;padding:1rem 2.5rem;border:2px solid #991b1b;color:#e5e7eb;background:transparent;cursor:pointer;letter-spacing:0.2em;font-size:0.875rem;text-transform:uppercase;transition:all 0.3s;"
+          onmouseover="this.style.background='rgba(127,29,29,0.3)';this.style.borderColor='#dc2626'"
+          onmouseout="this.style.background='transparent';this.style.borderColor='#991b1b'">
+          ورود به صحنه ←
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       صفحه ۲: مصاحبه‌ها (این افراد مظنون نیستن، فقط با آن‌ها مصاحبه شده)
+       ============================================================ -->
+  <div id="screen-cases" class="screen">
+    <div style="min-height:100vh;padding:3rem 1rem;">
+      <div style="max-width:72rem;margin:0 auto;">
+        <div class="animate-fade-in" style="text-align:center;margin-bottom:2.5rem;">
+          <div style="display:flex;justify-content:center;gap:1rem;align-items:center;margin-bottom:1rem;flex-wrap:wrap;">
+            <div class="classified-stamp">CLASSIFIED</div>
+            <div class="stars-badge">S.T.A.R.S.</div>
+          </div>
+          <div class="umbrella-badge" style="justify-content:center;margin-bottom:0.75rem;">
+            <div class="umbrella-logo" style="width:28px;height:28px;"></div>
+            <span>Umbrella Intelligence File</span>
+          </div>
+          <h2 style="font-size:clamp(1.75rem,4vw,2.25rem);font-weight:900;color:#e5e7eb;margin-bottom:0.5rem;">مصاحبه با افراد نزدیک یارو</h2>
+          <p style="color:#6b7280;font-size:0.9rem;">مصاحبه های از پیش گرفته شده رو بخون بعد برو به اتاق خوابگاه جزییات این پرونده رو از نزدیک بررسی کن</p>
+          <div style="margin-top:0.75rem;display:flex;align-items:center;justify-content:center;gap:0.5rem;font-size:0.75rem;color:#4b5563;">
+            <span style="width:0.5rem;height:0.5rem;border-radius:50%;background:#b91c1c;animation:pulse 2s infinite;"></span>
+            <span>خونده شده: <span id="reviewed-count">0</span> / 4</span>
+          </div>
+        </div>
+
+        <div id="suspects-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.25rem;"></div>
+
+        <div style="margin-top:2.5rem;text-align:center;">
+          <button id="btn-cases-continue" disabled
+            style="padding:1rem 2.5rem;border:2px solid #1f2937;color:#374151;background:transparent;cursor:not-allowed;letter-spacing:0.2em;font-size:0.875rem;text-transform:uppercase;transition:all 0.3s;">
+            ابتدا همه مصاحبه‌ها را بخوان
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       صفحه ۳: در اتاق (کی‌پد رمز)
+       رمز صحیح: 8315 (از پیام تلگرام لیلا)
+       ============================================================ -->
+  <div id="screen-door" class="screen">
+    <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem;position:relative;">
+      <!-- عکس پس‌زمینه در — آدرس را عوض کن -->
+      <div style="position:absolute;inset:0;background-size:cover;background-position:center;opacity:0.15;
+        background-image:url('https://images.pexels.com/photos/18192551/pexels-photo-18192551.jpeg?auto=compress&cs=tinysrgb&h=650&w=940');"></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.9),rgba(0,0,0,0.7),rgba(0,0,0,0.9));"></div>
+
+      <div style="position:relative;z-index:10;text-align:center;max-width:24rem;width:100%;">
+        <div class="animate-fade-in" style="margin-bottom:2rem;">
+          <svg class="icon-3xl animate-pulse-slow" style="color:#991b1b;margin:0 auto 1rem;display:block;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <div class="stars-badge" style="margin:0 auto 0.75rem;">S.T.A.R.S. ACCESS</div>
+          <h2 style="font-size:1.5rem;font-weight:700;color:#d1d5db;margin-bottom:0.5rem;">در اتاق عاریا</h2>
+          <p style="font-size:0.875rem;color:#6b7280;">خوابگاه بستس اتاق عاریا هم الکی نمیشه واردش شد روی درش یه رمز داره</p>
+        </div>
+
+        <div id="keypad-box" class="animate-scale-in" style="background:rgba(0,0,0,0.6);border:2px solid #1f2937;border-radius:1rem;padding:1.5rem 2rem;">
+          <div id="pin-dots" style="display:flex;justify-content:center;gap:0.75rem;margin-bottom:1.5rem;">
+            <div class="pin-dot" style="width:1rem;height:1rem;border-radius:50%;border:2px solid #374151;"></div>
+            <div class="pin-dot" style="width:1rem;height:1rem;border-radius:50%;border:2px solid #374151;"></div>
+            <div class="pin-dot" style="width:1rem;height:1rem;border-radius:50%;border:2px solid #374151;"></div>
+            <div class="pin-dot" style="width:1rem;height:1rem;border-radius:50%;border:2px solid #374151;"></div>
+          </div>
+          <p id="keypad-error" style="display:none;color:#ef4444;font-size:0.875rem;margin-bottom:1rem;">رمز اشتباه است. دوباره امتحان کن.</p>
+          <p id="keypad-hint" style="display:none;color:#a16207;font-size:0.75rem;margin-bottom:1rem;"></p>
+          <div id="keypad-keys" style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;"></div>
+        </div>
+
+        <div style="margin-top:1.5rem;display:flex;align-items:center;justify-content:center;gap:0.5rem;font-size:0.75rem;color:#4b5563;">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+          <span>رمز صحیح را وارد کن تا وارد اتاق شوی</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       صفحه ۴: اتاق قربانی (هات‌اسپات‌ها)
+       عکس پس‌زمینه اتاق و موقعیت نقاط قرمز را اینجا تنظیم کن
+       ============================================================ -->
+  <div id="screen-room" class="screen">
+    <div style="min-height:100vh;position:relative;">
+      <!-- عکس پس‌زمینه اتاق — آدرس را عوض کن -->
+      <div style="position:absolute;inset:0;background-size:cover;background-position:center;
+        background-image:url('https://images.pexels.com/photos/8887627/pexels-photo-8887627.jpeg?auto=compress&cs=tinysrgb&h=650&w=940');"></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.7),rgba(0,0,0,0.5),rgba(0,0,0,0.8));"></div>
+
+      <div style="position:relative;z-index:10;padding-top:2rem;padding-left:1rem;padding-right:1rem;text-align:center;">
+        <div class="umbrella-badge" style="justify-content:center;margin-bottom:0.5rem;" class="animate-fade-in">
+          <div class="umbrella-logo" style="width:22px;height:22px;"></div>
+          <span>Raccoon City — Sector 7</span>
+        </div>
+        <h2 class="animate-fade-in" style="font-size:clamp(1.5rem,4vw,1.875rem);font-weight:900;color:#e5e7eb;margin-bottom:0.25rem;">اتاق قربانی</h2>
+        <p class="animate-fade-in delay-200" style="font-size:0.875rem;color:#6b7280;">هر کصشری تو این اتاق میبینیو بررسی کن بعدش یه مضنون رو گزارش بده</p>
+        <div style="margin-top:0.5rem;display:flex;align-items:center;justify-content:center;gap:0.5rem;font-size:0.75rem;color:#4b5563;">
+          <span style="width:0.5rem;height:0.5rem;border-radius:50%;background:#15803d;"></span>
+          <span>سرنخ‌های یافت‌شده: <span id="completed-count">0</span> / 4</span>
+        </div>
+      </div>
+
+      <!-- ناحیه هات‌اسپات‌ها — موقعیت‌ها از roomHotspots -->
+      <div id="hotspots-area" style="position:relative;height:60vh;width:100%;"></div>
+
+      <div id="hotspot-buttons" style="position:relative;z-index:10;padding:0 1rem 2rem;display:flex;flex-wrap:wrap;justify-content:center;gap:0.75rem;"></div>
+      <div id="all-done-msg" style="display:none;position:relative;z-index:10;text-align:center;padding-bottom:2rem;" class="animate-fade-in">
+        <p style="color:#ca8a04;font-size:0.875rem;">سه سرنخ اصلی کامل شد. حالا می‌توانی گاوصندوق را باز کنی.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       صفحه آخر: نتیجه‌ی گزارش
+       ============================================================ -->
+  <div id="screen-final" class="screen">
+    <div id="final-content" style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:3rem 1rem;"></div>
+  </div>
+
+  <!-- ============================================================
+       مودال‌ها
+       ============================================================ -->
+
+  <!-- مودال متن مصاحبه (این افراد مظنون نیستن) -->
+  <div id="modal-suspect" class="modal-overlay hidden" onclick="if(event.target===this)closeSuspectModal()">
+    <div class="animate-scale-in" style="position:relative;max-width:42rem;width:100%;max-height:85vh;overflow-y:auto;background:linear-gradient(to bottom,#030712,#000);border:2px solid #1f2937;border-radius:0.5rem;" onclick="event.stopPropagation()">
+      <button onclick="closeSuspectModal()" style="position:absolute;top:1rem;left:1rem;color:#6b7280;background:none;border:none;cursor:pointer;z-index:10;font-size:1.5rem;">✕</button>
+      <div id="suspect-modal-content"></div>
+    </div>
+  </div>
+
+  <!-- مودال گوشی (تلگرام) -->
+  <div id="modal-phone" class="modal-overlay hidden" onclick="if(event.target===this)closeModal('phone')">
+    <div class="animate-scale-in" style="position:relative;width:100%;max-width:24rem;height:85vh;background:#0e1621;border-radius:2rem;border:4px solid #1f2937;overflow:hidden;display:flex;flex-direction:column;" onclick="event.stopPropagation()">
+      <div style="position:absolute;top:0;left:50%;transform:translateX(-50%);width:8rem;height:1.5rem;background:#111827;border-radius:0 0 1rem 1rem;z-index:30;"></div>
+      <div id="phone-content" style="flex:1;display:flex;flex-direction:column;overflow:hidden;"></div>
+    </div>
+  </div>
+
+  <!-- مودال دفترچه خاطرات -->
+  <div id="modal-diary" class="modal-overlay hidden" onclick="if(event.target===this)closeModal('diary')">
+    <div class="animate-scale-in diary-book" style="position:relative;max-width:28rem;width:100%;max-height:90vh;overflow:hidden;display:flex;flex-direction:column;" onclick="event.stopPropagation()">
+      <div id="diary-content"></div>
+      <div class="diary-spine"></div>
+    </div>
+  </div>
+
+  <!-- مودال گزارش -->
+  <div id="modal-report" class="modal-overlay hidden" onclick="if(event.target===this)closeModal('report')">
+    <div class="animate-scale-in" style="position:relative;max-width:32rem;width:100%;max-height:85vh;overflow-y:auto;background:linear-gradient(to bottom,#030712,#000);border:2px solid #1f2937;border-radius:0.5rem;" onclick="event.stopPropagation()">
+      <div id="report-content"></div>
+    </div>
+  </div>
+
+  <!-- مودال گاوصندوق -->
+  <div id="modal-treasure" class="modal-overlay hidden">
+    <div class="animate-scale-in" style="position:relative;max-width:32rem;width:100%;max-height:92vh;max-height:92dvh;background:linear-gradient(to bottom,#030712,#000);border:2px solid #1f2937;border-radius:0.5rem;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;" onclick="event.stopPropagation()">
+      <div id="treasure-content"></div>
+    </div>
+  </div>
+
+  <!-- لایترباکس ویدیو (کلیک) -->
+  <div id="video-lightbox" class="modal-overlay hidden" style="background:rgba(0,0,0,0.92);z-index:100;" onclick="closeVideoLightbox()">
+    <div id="video-lightbox-inner" style="position:relative;max-width:min(960px,95vw);width:100%;" onclick="event.stopPropagation()">
+      <button onclick="closeVideoLightbox()" style="position:absolute;top:-2.5rem;left:0;color:#fff;background:none;border:none;font-size:1.5rem;cursor:pointer;">✕</button>
+      <video id="video-lightbox-player" controls playsinline autoplay style="width:100%;max-height:85vh;background:#000;border-radius:0.5rem;"></video>
+    </div>
+  </div>
+
+  <script>
+    /* ============================================================
+       ========== بخش داده‌ها (متن‌ها و عکس‌ها) ==========
+       همه چیزهایی که باید تغییر بدی اینجاست.
+       ساختار و منطق سایت دست نخورده می‌ماند.
+       ============================================================ */
+
+    // ----- متن اینترو -----
+    // هر خط جداگانه نمایش داده می‌شود. خط‌های خالی حذف می‌شوند.
+    const introText = `به این پرونده حل نشده خوش آمدید
+    اینجا عاریا گم شده
+    یه سری اطلاعات از ایشون و افرادی که با او در ارتباط بودن وجود داره
+    کمکش کن تا پیداش کنی ببینی چه کسی باعث گم شدنش شده؟
+    نکته اصلی اینکه این فقط برای تو فرستاده شده
+    پس چیزایی داخل این وب وجود دارن که شاید دلیلی نداشته باشه به کسی نشونش بدی`;
+
+    // ----- افرادی که مصاحبه شدن (این‌ها مظنون نیستن!) -----
+    // هر نفر یک فیلد text داره: همون چیزی که خودش گفته، به صورت متن ساده.
+    // خودت متن رو با حرفای واقعی طرف جایگزین کن. برای پاراگراف بعدی، \n\n بذار.
+    // isCulprit فقط برای مرحله‌ی آخر (گزارش نهایی) استفاده میشه، به مصاحبه ربطی نداره.
+    // photo: آدرس عکس فرد
+    const suspects = [
+      {
+        id: 's1',
+        name: 'یونس سلطان طرزه🗣🔥',
+        title: 'دوست نزدیک',
+        age: 23,
+        photo: 'photo_2026-09-18_04-00-38.jpg',
+        text: 'والا داشتیم گیم میزدیم، دو به دو رنک رویالم بود، روابط خوب بود، یهو یه شب اومد گفت استادش دنبالشه، هرجا میره میبینتش، حتی اومده تا در خوابگاه.\n\nاین مدتم درگیر یه کصشری بود ولی قوی انجامش داده بود، کار دانشگاهی بود. همه دنبالش بودن اسمشون داخلش باشه، حتی استاداش.\n\nحالا یه یارویی هم این وسط، همکلاسیش، یهو تخماتیک تصمیم میگیره با این دوست بشه. حالا اسمش یادم نی.\nخودم نظرم بیشتر روی استادس کلیتش.\n\nخود عاریا آدم عجیبیه. ۳ سال پیش اومده بود تهران با دوستاش، حالا خارکصه ممد هنوز پولشو نداده😂🫵\nاون موقع سنشو نمیدونستیم ولی رمز کارتش 8315 بود. از 83 فهمیدیم سال تولدشه و لو رفت، ولی هیچوقت درباره 15 حرفی نزد.',
+        isCulprit: false,
+      },
+      {
+        id: 's2',
+        name: 'ریحانه',
+        title: 'دوست',
+        age: 23,
+        photo: 'photo_2026-09-13_21-29-17.jpg',
+        text: 'والا حقیقتا این مدت زیاد خبری ازش ندارم.\nاواخری که باهاش در ارتباط بودم قرار بود برای یونس یه وب برای تبریک تولد بسازیم.\nاواخر هم من جوابش نمیدادم. وقتیم که رفتم انگاری ناراحت بود، رفع تکلیفی فقط جوابم میداد.\n\nولی درباره غیبتش، اگر اتفاقی افتاده باشه همیشه از دانشگاه و اساتیدش مینالید. حالا نمیدونم واقعی بوده یا چی، ولی انگار خیلی اذیت بود، نمیدونم واقعیتش.\nحس میکنم اگر از همکلاسیاش چیزی میدونید بپرسید بهتره.',
+        isCulprit: false,
+      },
+      {
+        id: 's3',
+        name: 'مبین',
+        title: 'همکلاسی',
+        age: 22,
+        photo: 'photo_2026-09-21_20-01-32.jpg',
+        text: 'والا چی بگم، این یه پروژه‌ای انجام داده بود توی تابستون، دنبال یه نفر دیگه میگشت که اسمش توی اون باشه.\nاینور استادش پیگیری میکرد، ولی انگاری قصدش اون پروژه نبود، ولی خیلی به عاریا نزدیک میشد.\n\nیکیم یه یارویی، امید مادرج.. چیز مجتهدزاده بود. این یارو حروزمزادس، یه حرف راست از دهنش در نمیره و واسه هدفی که داره هرکاری بخواد انجام میده.\nعاریا فک کنم اینو درست نمیشناخت وگرنه باهاش صمیمی برخورد نمیکرد هیچوقت.',
+        isCulprit: false,  // <-- برای مرحله‌ی گزارش نهایی
+      },
+      {
+        id: 's4',
+        name: 'ممد شهروین',
+        title: 'خارکصه',
+        age: 21,
+        photo: 'photo_2026-08-09_21-52-44.jpg',
+        text: 'چیز، ما که هر وقت نیازش داشتیم یه زنگی بهش میزدیم، چمدونم کجا رفته.\nولی اگه پولی بهم میرسه تا منم بیام تو کار، یالله(هیچوقت به لر اعتماد نکن).',
+        isCulprit: false,
+      },
+    ];
+
+    // ----- مظنون‌های صفحه‌ی گزارش نهایی (۱۰ نفر، ۵ نفرشون مظنون اصلی) -----
+    // name / title / photo رو خودت پر کن. photo خالی باشه، دایره با حرف اول اسم نشون داده میشه.
+    // isCulprit: true = مظنون اصلی، false = بی‌گناه
+    const reportSuspects = [
+      { id: 'r1',  name: 'یونس',  title: 'به قیافش نمیخوره', photo: 'photo_2026-09-13_21-29-23.jpg', isCulprit: false },
+      { id: 'r2',  name: 'ریحانه',  title: '', photo: 'photo_2026-09-13_21-29-17.jpg', isCulprit: false },
+      { id: 'r3',  name: 'عاریا اصلا باز کرده ی هفته نمیخواد باشش',  title: 'آقا مزاحم نشو', photo: 'photo_2026-09-21_19-41-34.jpg', isCulprit: false },
+      { id: 'r4',  name: 'اصلا خودت(صبا)',  title: 'هرچیزی ممکنه', photo: 'photo_2025-01-13_19-15-23.jpg', isCulprit: false },
+      { id: 'r5',  name: 'امید مجتهدزاده',  title: 'عکسی ازش موجود نیست', photo: '', isCulprit: true },
+      { id: 'r6',  name: 'ممد خارکصه',  title: 'گوهیم نخورده باشه جات بودم به جرم دزدی میگرفتمش', photo: 'photo_2026-08-09_21-52-44.jpg', isCulprit: false },
+      { id: 'r7',  name: 'مطهره موسوی',  title: 'حقیقتش نیازی به گفتن نی', photo: 'photo_2026-08-06_16-03-09.png', isCulprit: false },
+      { id: 'r8',  name: 'امداد',  title: 'استاد پیگیری که با 70 سال سن هنوز داره تدریس میکنه کصکش', photo: 'photo_2026-09-21_19-41-31.jpg', isCulprit: true },
+      { id: 'r9',  name: 'بلاروس',  title: 'قضاوتم نکن', photo: 'photo_2026-08-10_18-16-02.jpg', isCulprit: false },
+      { id: 'r10', name: 'ند سیتون', title: 'بوش از راسو بدتره جوری که میتونه هرکسیو فراری بده', photo: 'photo_2026-08-06_15-54-18.jpg', isCulprit: false },
+    ];
+
+    // ----- چت‌های تلگرام -----
+    // avatar: عکس پروفایل هر شخص
+    // messages: پیام‌ها (sender: 'me' = قربانی، 'them' = طرف مقابل)
+    const telegramChats = [
+      {
+        id: 'saba',
+        name: 'Saba',
+        avatar: 'photo_2026-09-16_01-31-46.jpg',
+        // عکس پروفایل Saba را اینجا عوض کن ↑
+        lastMessage: 'Sticker',
+        lastTime: '10:56',
+        unread: 0,
+        wallpaper: 'galaxy', // پس‌زمینه کهکشانی مثل اسکرین‌شات
+        messages: [
+          // --- بخش اول (شب) ---
+          { id: 1, type: 'date', text: 'September 2' },
+          { id: 2, type: 'video', sender: 'them', duration: '0:45', forwardedFrom: 'Saba', label: 'Saba Video', time: '23:47', src: 'IMG_3380.MP4' },
+          { id: 3, type: 'date', text: 'September 3' },
+          { id: 4, type: 'emoji', sender: 'me', text: '😂😂😂😂😂😂', time: '00:20' },
+          { id: 5, type: 'text', sender: 'me', text: '🔥🔥 پلکان زندگی', time: '00:20' },
+          // ویدیو ۲: اسم فایل دوم را اینجا بگذار
+          { id: 6, type: 'video', sender: 'me', duration: '1:19', forwardedFrom: 'Arya', label: 'Forwarded from Arya', time: '00:20', src: 'video_2026-09-16_01-24-20.mp4' },
+          { id: 7, type: 'emoji', sender: 'them', text: '😂😂😂😂😂😂😂', time: '00:23' },
+          { id: 8, type: 'voice', sender: 'me', duration: '0:34', time: '00:34' },
+          // PLACEHOLDER ویس — فایل صوتی را خودت بگذار
+          { id: 9, type: 'text', sender: 'them', text: 'خوبه', time: '01:41' },
+          { id: 10, type: 'text', sender: 'them', text: 'مال ما تو اوج کار میره', time: '01:42' },
+          { id: 11 , type: 'sticker', sender: 'me', stickerLabel: 'استیکر Saba', time: '10:56', src: 'photo_2026-09-16_01-38-33.jpg' },
+          { id: 12, type: 'date', text: 'Today' },
+          { id: 13, type: 'text', sender: 'me', text: '', time: '00:00' },
+
+          // PLACEHOLDER استیکر — عکس استیکر را در src بگذار
+
+          // --- جداکننده تاریخ ---
+          
+
+          // --- بخش دوم ---
+          // ویدیو ۱: فایل را کنار index.html بگذار و اسمش را در src بنویس
+          
+        ],
+      },
+      {
+        id: 'leila',
+        name: 'Yones.s',
+        pinned: 'https://deadvirus6.github.io/yones/',
+        avatar: 'photo_2026-09-13_21-29-23.jpg',
+        lastMessage: 'داداااااااش',
+        lastTime: '23:20',
+        unread: 5,
+        messages: [
+          
+          { id: 1, type: 'text', sender: 'me', text: 'داداش', time: '18:43' },
+          { id: 2, type: 'text', sender: 'me', text: 'کمک', time: '18:43' },
+          { id: 3, type: 'text', sender: 'me', text: 'کمکککککککککک', time: '18:43' },
+          { id: 4, type: 'text', sender: 'me', text: 'کصکشو هرجا میرم میبینمش', time: '18:43' },
+          { id: 5, type: 'text', sender: 'me', text: 'چه تو شهر چه تو خواب', time: '18:44' },
+          { id: 6, type: 'text', sender: 'me', text: 'الان دوباره داشتم برمیگشتم خوابگاه', time: '18:45' },
+          { id: 7, type: 'text', sender: 'me', text: 'حرومزاده داشت با مامور خوابگاه حرف میزد', time: '18:45' },
+          { id: 8, type: 'text', sender: 'me', text: 'آخه پیر کیری اینجا چیکار داره قطعا اومده دنبالم', time: '18:45' },
+          { id: 9, type: 'text', sender: 'me', text: 'بچه اگه دیگه نبودم زنگ پلیس بزن', time: '18:45' },
+          { id: 10, type: 'text', sender: 'them', text: 'یوووو داداش چته', time: '17:18' },
+          { id: 11, type: 'text', sender: 'them', text: 'الان در چه حالی؟', time: '17:18' },
+          { id: 12, type: 'text', sender: 'them', text: 'داداش نیستی', time: '18:42' },
+          { id: 13, type: 'text', sender: 'them', text: 'یوووووووو کجا رفتی', time: '22:53' },
+          { id: 14, type: 'text', sender: 'them', text: 'داداااااااش', time: '23:20' },
+        ],
+      },
+      {
+        id: 'sara',
+        name: 'mmd',
+        avatar: 'photo_2025-08-13_02-10-41.jpg',
+        lastMessage: 'GIF',
+        lastTime: '۲۲:۱۸',
+        unread: 0,
+        messages: [
+          { id: 1, type: 'text', sender: 'me', text: 'هوی خارکصه', time: '۲۲:۱۵' },
+          { id: 2, type: 'text', sender: 'them', text: 'چته مرتیکه', time: '۲۲:۱۷' },
+          { id: 3, type: 'text', sender: 'me', text: 'هیچی همینجوری دلیل میخواد مگه', time: '۲۲:۱۸' },
+          { id: 3, type: 'text', sender: 'me', text: 'پول مارو رد کن بیاد', time: '۲۲:۱۸' },
+          { id: 3, type: 'text', sender: 'them', text: 'پول چی مرتیکه', time: '۲۲:۱۸' },
+          { id: 3, type: 'text', sender: 'me', text: 'خارکصه 1 تومن از 3 سال پیش بدهکاری پول چی؟', time: '۲۲:۱۸' },
+          { id: 4, type: 'gif', sender: 'them', src: 'doc_2026-09-19_23-55-09.mp4', time: '۲۲:۱۸' },
+          // ↑ اینجا src ویدیو رو بذار (مثلاً 'video.mp4') — خودکار و مدام پلی می‌شه مثل گیف
+        ],
+      },
+      {
+        id: 'kaveh',
+        name: 'mobin',
+        avatar: '',
+        lastMessage: 'حله داداش',
+        lastTime: '14:26',
+        unread: 0,
+        messages: [
+          { id: 1, type: 'text', sender: 'them', text: 'مشتی غذارو تفویض زدی؟', time: '۱۴:۲۰' },
+          { id: 2, type: 'text', sender: 'me', text: 'آره دایی زدم', time: '۱۴:۲۵' },
+          { id: 3, type: 'text', sender: 'them', text: 'حله داداش', time: '۱۴:۲۶' },
+        ],
+      },
+      {
+        // این چت از روی گوشی خود ریحانه گرفته شده، برای همین پیام‌های خودش (me) آبی/راست و پیام‌های آریا (them) خاکستری/چپ هستن
+        id: 'reihane',
+        name: 'Reihane',
+        avatar: 'photo_2026-09-13_21-29-17.jpg',
+        lastMessage: 'عکس',
+        lastTime: '10:06',
+        unread: 0,
+        messages: [
+          { id: 1, type: 'text', sender: 'them', text: 'حسرت بلاروس 😭😂😂😂😂😂', time: '۲۰:۴۸' },
+          { id: 2, type: 'text', sender: 'them', text: 'باخت داد', time: '۲۰:۴۸' },
+          { id: 3, type: 'text', sender: 'them', text: 'تشتشتنشحشحششجشجشجشجشج', time: '۲۰:۴۸' },
+          { id: 4, type: 'text', sender: 'me', replyTo: { name: 'Arya', text: 'باخت داد' }, text: 'بخدانسدسحستنتتحث', time: '۲۰:۴۸' },
+          { id: 5, type: 'text', sender: 'them', text: 'ببین رفتم درمورد ازدواج ازش مشاوره بگیرم', time: '۲۰:۴۸' },
+          { id: 6, type: 'text', sender: 'them', text: 'بقران انگار بیست ساله شوهر داره', time: '۲۰:۴۸' },
+          { id: 7, type: 'text', sender: 'them', text: 'یچیزایی گفتاا', time: '۲۰:۴۸' },
+          { id: 8, type: 'text', sender: 'them', text: 'خایه کرده بودم', time: '۲۰:۴۸' },
+          { id: 9, type: 'text', sender: 'me', replyTo: { name: 'Arya', text: 'بقران انگار بیست ساله شوهر د...' }, text: '😂😂😂😂', time: '۲۰:۴۸' },
+          { id: 10, type: 'text', sender: 'them', text: 'ولی خیلی حرفای خوبی زد خدایی', time: '۲۰:۴۸' },
+          { id: 11, type: 'text', sender: 'them', replyTo: { name: 'Arya', text: 'راننده اسنپ اینده 🔥' }, text: '😂😂😂😂😂😂😂😂😂😂نکن', time: '۲۰:۴۹' },
+          { id: 12, type: 'text', sender: 'me', text: 'ولی خیلی حرفای خوبی زد خدایی', time: '۲۰:۴۹' },
+          { id: 13, type: 'text', sender: 'me', text: 'هنوز طلاق نگرفته؟', time: '۲۰:۴۹' },
+          { id: 14, type: 'gif', sender: 'me', src: 'angry.mp4', time: '۲۰:۴۹' },
+          // ↑ اینجا src گیف رو بذار
+          { id: 15, type: 'text', sender: 'them', replyTo: { name: 'Reihane', text: 'هنوز طلاق نگرفته؟' }, text: 'نشنشحصحصجصجصجصجصجصجصجص', time: '۲۰:۴۹' },
+          { id: 16, type: 'text', sender: 'them', text: 'جهیددددممممممممم', time: '۲۰:۴۹' },
+          { id: 17, type: 'text', sender: 'me', text: 'ثجارثترسخرسهجرسجسجح', time: '۲۰:۴۹' },
+          { id: 18, type: 'text', sender: 'me', text: 'عا راستی', time: '۲۰:۴۹' },
+          { id: 19, type: 'text', sender: 'them', text: 'جان', time: '۲۰:۴۹' },
+          { id: 20, type: 'text', sender: 'me', text: '۲۰امه کی عه تولد یونسه هنوز سایتو پر نکردم', time: '۲۰:۴۹' },
+          { id: 21, type: 'text', sender: 'me', text: 'منتظر تو بودم', time: '۲۰:۴۹' },
+          { id: 22, type: 'photo', sender: 'me', src: 'photo_2026-09-21_20-27-36.jpg', time: '۲۰:۵۰' },
+          // ↑ اینجا عکس (استیکر/میم فمیلی‌گای) رو بذار
+          { id: 23, type: 'text', sender: 'them', text: 'جدی', time: '۲۰:۵۰' },
+          { id: 24, type: 'text', sender: 'them', text: 'وای ببخشید', time: '۲۰:۵۰' },
+          { id: 25, type: 'text', sender: 'them', text: 'خب بیا پرش کنیم', time: '۲۰:۵۰' },
+          { id: 26, type: 'text', sender: 'them', text: 'کی وقت داری', time: '۲۰:۵۰' },
+          // ↑ اینجا استیکر رو بذار
+          { id: 28, type: 'text', sender: 'them', text: 'تشنشتشحححص', time: '۲۰:۵۰' },
+          { id: 29, type: 'text', sender: 'me', replyTo: { name: 'Arya', text: 'وای ببخشید' }, text: 'فداسرت عزیزم این چ حرفیه', time: '۲۰:۵۰' },
+          { id: 30, type: 'text', sender: 'me', replyTo: { name: 'Arya', text: 'کی وقت داری' }, text: 'والا سه شنبه تعطیله فردا و پس فردا کامل هستم', time: '۲۰:۵۱' },
+          { id: 31, type: 'text', sender: 'me', text: 'سوالاتت رو اماده کن\nچهارگزینه ای چیزی\nجزئیاتی ایده ای چیزی هم داشتی بگو تا اضاف کنم', time: '۲۰:۵۱' },
+          { id: 32, type: 'text', sender: 'me', replyTo: { name: 'Arya', text: 'وای ببخشید' }, text: 'خودمم گیر بودماا الکی انداختم گردنت 😖', time: '۲۰:۵۲' },
+          {
+            id: 33, type: 'reel', sender: 'me', time: '۲۰:۵۴',
+            src: 'photo_2026-09-21_19-32-50.jpg', // ← عکس/تصویر ریلز رو اینجا بذار
+            igAccount: 'vakil.aboee',
+            overlayText: 'تا مراحل دریافت مجوز',
+            likes: '۱۹.۶K',
+            caption: 'اینو ریدم دوتاتون ۱۸ دادید',
+          },
+          { id: 34, type: 'text', sender: 'them', replyTo: { name: 'Reihane', text: 'سوالاتت رو اماده کن چهارگزینه ای چیزی جزئیاتی ایده...' }, text: 'حله', time: '۲۱:۴۵' },
+          { id: 35, type: 'text', sender: 'them', replyTo: { name: 'Reihane', text: 'خودمم گیر بودماا الکی انداخت...' }, text: '🤭🤭🤭🤭', time: '۲۱:۴۵' },
+          { id: 36, type: 'voice', sender: 'them', replyTo: { name: 'Reihane', text: 'والا سه شنبه تعطیله فردا و پس...' }, duration: '00:13', time: '۲۱:۴۵' },
+          { id: 37, type: 'text', sender: 'them', replyTo: { name: 'Reihane', text: 'اینو ریدم دوتاتون ۱۸ دادید' }, text: '🤣🤣🤣🤣🤣🤣', time: '۲۱:۴۵' },
+          { id: 38, type: 'text', sender: 'me', replyTo: { name: 'Arya', text: 'Voice message' }, text: '🙏 من ۶', time: '۲۲:۴۵' },
+          { id: 39, type: 'text', sender: 'me', replyTo: { name: 'Arya', text: 'Voice message' }, text: 'ریدم اگه چیزه تا پس فردا', time: '۲۲:۴۵' },
+          { id: 40, type: 'text', sender: 'me', text: 'ولی هستم من دیگه بعد از ظهرا اینا کامل دستمه', time: '۲۲:۴۶' },
+          { id: 41, type: 'date', text: 'August 3' },
+          { id: 42, type: 'text', sender: 'me', text: 'اقا چهارشنبه هم تعطیلیم', time: '۱۵:۳۹' },
+          { id: 43, type: 'text', sender: 'me', text: 'هروقت بگیی هستم', time: '۱۵:۳۹' },
+          { id: 44, type: 'date', text: 'August 8' },
+          { id: 45, type: 'text', sender: 'them', text: 'امروز چندمه آریا', time: '۱۶:۱۴' },
+          { id: 46, type: 'text', sender: 'me', text: 'نمیدونم', time: '۲۰:۱۴' },
+          { id: 47, type: 'date', text: 'August 9' },
+          { id: 48, type: 'text', sender: 'them', text: 'امروز چی', time: '۱۳:۰۴' },
+          { id: 49, type: 'text', sender: 'me', text: 'امروز چی؟', time: '۱۴:۲۹' },
+          { id: 50, type: 'text', sender: 'them', text: 'امروز چندمه داداش', time: '۱۸:۳۱' },
+          { id: 51, type: 'date', text: 'August 10' },
+          { id: 52, type: 'text', sender: 'me', text: '۱۹', time: '۱۲:۲۱' },
+          { id: 53, type: 'text', sender: 'them', text: 'فردا تولدشه؟؟؟', time: '۱۲:۳۱' },
+          { id: 54, type: 'text', sender: 'me', text: 'انگاری', time: '۱۳:۰۶' },
+          { id: 55, type: 'text', sender: 'them', text: 'امشب دارن میان راجب مهریه صحبت کنن', time: '۱۳:۴۱' },
+          { id: 56, type: 'text', sender: 'them', text: 'خایه کردم', time: '۱۳:۴۱' },
+          { id: 57, type: 'text', sender: 'me', replyTo: { name: 'Arya', text: 'امشب دارن میان راجب مهریه صحبت کنن' }, text: 'ریدم اقا مبارک', time: '۱۷:۵۹' },
+          { id: 58, type: 'date', text: 'August 11' },
+          { id: 59, type: 'text', sender: 'them', text: ':))))', time: '۰۹:۵۸' },
+          { id: 60, type: 'text', sender: 'them', text: 'دعوا شدا حاجی', time: '۰۹:۵۸' },
+          { id: 61, type: 'text', sender: 'me', text: 'ودفف', time: '۰۹:۵۹' },
+          { id: 62, type: 'text', sender: 'me', text: 'چرا چیشد', time: '۰۹:۵۹' },
+          { id: 63, type: 'text', sender: 'them', text: 'بابام بالا میگه مهریه رو', time: '۱۰:۰۰' },
+          { id: 64, type: 'text', sender: 'them', text: '۵۰۰ تا سکه', time: '۱۰:۰۰' },
+          { id: 65, type: 'text', sender: 'them', text: 'با حق طلاق', time: '۱۰:۰۰' },
+          { id: 66, type: 'text', sender: 'them', text: '....', time: '۱۰:۰۱' },
+          { id: 67, type: 'text', sender: 'me', replyTo: { name: 'Arya', text: '۵۰۰ تا سکه' }, text: 'یووووو', time: '۱۰:۰۶' },
+          { id: 68, type: 'photo', sender: 'me', src: 'photo_2026-09-21_19-32-24.jpg',caption:'تصورم از بابات', time: '۱۰:۰۶' },
+          { id: 69, type: 'text', sender: 'me', text: 'همین که بند فروش نزاشته خودش خیلیه', time: '۱۰:۰۶' },
+          { id: 70, type: 'text', sender: 'them', text: '🤣🤣🤣🤣🤣🤣🤣🤣🤣🤣🤣🤣🤣', time: '۱۲:۱۸' },
+          // ↑ آخرین عکس (تار/دانلودنشده تو اسکرین‌شات) رو اینجا بذار
+        ],
+      },
+    ];
+
+    // ----- دفترچه خاطرات (جای دوربین) -----
+    // هر آبجکت = یک صفحه. متن‌ها را اینجا عوض کن. عکس صفحه اختیاری است (image).
+    const diaryPages = [
+      {
+        id: 'page1',
+        title: 'صفحه 1',
+        date: '',
+        body: `فردا برمیگردم بهبهان
+        مریضم حالوم خوب نی
+        فقط امروز کارم داخل این دانشکده تموم شه سریع برمیگردم`,
+      },
+      {
+        id: 'page2',
+        title: 'صفحه 2',
+        date: '',
+        body: `دانشگوه به طرز کصشرواری هیچی اعلام نمیکنه 
+        خدا بخیر کنه
+        خو لاشی بگو ترم جدید مجازیه یا حضوری`,
+      },
+      {
+        id: 'page3',
+        title: 'صفحه 3',
+        date: '',
+        body: `صادقانه روز کصشری بود
+        نمیدونم چرا دید همه ایجوری شده نسبت بهم
+        این امیدکصشرزاده هم هی خودشو میمالونه بهم
+        کصکش ولم کن عقب مونده کلمونو کیری کردی
+        چجوری به این کصخل بفهمونم اخه`,
+      },
+      {
+        id: 'page4',
+        title: 'صفحه 4',
+        date: '',
+        body: `این امداد هم خیلی پیگیره 
+        ادم عجیبیه هر موقعی دنبال من نمیاد
+        نمیدونم چیزی هست میخواد بهم بگه یا چی
+        نکته ای تذکری
+        ولی ترسناک میخوره باشه عادم عجیبیه
+        فعلا از دستش فرار میکنم تا ندونم چخبره`,
+      },
+      {
+        id: 'page5',
+        title: 'صفحه 5',
+        date: '',
+        body: `امروز دانشکده بودم باز یارو بد نیگا میکرد اتاقشم طبقه 4 عه از بالا ادم 70 ساله خیلی ترسناکه
+        دوست دارم سریعا کارم با این دانشکده تموم شه حوصله هیچکدومتونو دارم`,
+      },
+      {
+        id: 'page6',
+        title: 'صفحه 6',
+        date: '',
+        body: `از این زندگی بدوم میایه`,
+      },
+      
+    ];
+
+    // ----- هات‌اسپات‌های اتاق -----
+    // x و y به درصد موقعیت روی تصویر اتاق هستند
+    const roomHotspots = [
+      { id: 'phone',    label: 'گوشی موبایل',      x: 62, y: 55, description: 'گوشی قربانی روی میز کنار تخت است. صفحه روشن است.' },
+      { id: 'diary',    label: 'دفترچه کصشرات',   x: 30, y: 25, description: 'دفترچه کصشرات قربانی روی میز — ورق بزن' },
+      { id: 'report',   label: 'گزارش مظنون',      x: 80, y: 70, description: 'فرم گزارش‌دهی برای معرفی مظنون اصلی' },
+      { id: 'treasure', label: 'گاوصندوق',         x: 45, y: 75, description: 'گاوصندوقی پنهان شده زیر تخت — بعد از ۳ سرنخ باز می‌شود' },
+    ];
+
+    // ----- نامه تولد داخل گاوصندوق -----
+    const birthdayLetter = `امیدوارم دفترچه‌ی یادداشت رو زیاد توجهی بهش نکرده باشی...
+خلاصه‌ش این بود که قرار بود توی این دفترچه، یکی از مهم‌ترین چیزای زندگیم رو درست کنم؛ یا حداقل یه گوشه‌ای از زندگیم رو توش جا بدم.
+ولی خب... دو روز پیش از بیمارستان برگشتم بخاطر یه مریضی جمع کردم اومدم بهبهان و نشد اون چیزی که می‌خواستم رو انجام بدم.
+آخرش اومدم همینو بسازم و قبل از اینکه بیشتر از این حرف بزنم، فقط بگم شب بخیر...
+احتمالاً الان مثل یه سگ افتادم و خوابم 
+امیدوارم این‌بار وقتی چشمامو می‌بندم، فردا با حال بهتری بیدار بشم.
+
+بیخیال...
+
+تولدت مبارک عزیزم. ❤️
+
+نمی‌دونم با این فاصله‌ای که بینمون هست، چه هدیه‌ای می‌تونم بهتون بدم. تنها چیزی که فعلا از دستم برمیاد اینه که یه تیکه از افکارم، ایده‌هام و احساسم رو بذارم جلوی چشماتون.
+
+کاش سال دیگه از این خبرها نباشه... 🙏🏻
+کاش سال دیگه خودم پیشتون باشم و دیگه برای این کارا مجبور نباشم از دور چیزی بسازم و بفرستم.
+راستیتش دیگه خستم میدونم چیز بیخود و بیمعنیه ولی خب کار دیگه ای از دستوم بر نمیومد
+
+امیدوارم امسال، سالی باشه که به چیزایی که واقعاً از ته دلت می‌خوای برسی.
+امیدوارم اتفاقای قشنگی برات بیفته، دلت بیشتر بخنده و کمتر چیزی باشه که بخواد ناراحتت کنه.
+
+و عع... راستی، شبت هم بخیر. 🥰
+امیدوارم سال بعد همین موقع، به‌جای اینکه از دور تماشاگر باشم دیگه خودن کنارتون باشم🙏`;
+
+    // ----- متن صفحه‌ی آخر (بعد از نامه) -----
+    // correct = وقتی گزارش درست بوده، wrong = وقتی گزارش غلط بوده
+    // برای پاراگراف جدید \n\n بذار. (فعلاً متن نمونه‌ست، خودت عوضش کن)
+    const finalTexts = {
+      correct: 'گزارشی که دادی درست بود.\n\nداستان کصشر ما اینجوری بود که من همچین گوهی خوردم و فکر میکردم کسی که دنبالمه ازم کار بکشه استاد لاشیمه در حالی که انگار اشتباه بود امید مادرج... بابا مجتهدزاده بود که میخواست همچین کاری کنه ولی یارو امداد استادم اومد ازم محافظت کنه و نزاره دست امید بهم برسه\nمیدونم خیلی کصشر بود همینی که هست انتظار معمای جنایی نداشته باش خودم بیحوصله تر از این حرفام اگر وقت بیشتری داشتم شاید یکم قشنگ تر انجامش میدادمپ\nشب بخیر صبا.',
+      wrong: 'گزارشی که دادی اشتباه بود.\n\nعاریا پیدا نشد خلاصه دنبال ادم اشتباهی رفتی \nخوشحالم داستان کصشر اصلی رو نمیدونی چون اینقدر کصشر بود امیدوار بودم اشتباه جواب بدی\nشب بخیر صبا.',
+    };
+
+
+    // عکس‌های گاوصندوق (قفل، باز، کیک)
+    const treasureImages = {
+      locked:  'https://images.pexels.com/photos/589038/pexels-photo-589038.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+      opening: 'https://images.pexels.com/photos/4939930/pexels-photo-4939930.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+      cake:    'https://images.pexels.com/photos/13063258/pexels-photo-13063258.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+    };
+
+    // رمز در اتاق
+    const CORRECT_CODE = '8315';
+
+    /* ============================================================
+       ========== منطق برنامه (دست نزن مگر بلد باشی) ==========
+       ============================================================ */
+
+    let stage = 'intro';
+    let completed = new Set();
+    let reviewedIds = new Set();
+    let pinInput = '';
+    let pinError = false;
+    let pinAttempts = 0;
+    let activeChat = null;
+    let visibleMessages = 0;
+    let readChats = new Set();
+    let diaryPage = 0;
+    let viewedDiaryPages = new Set([0]);
+    let selectedReportId = null;
+    let reportSubmitted = false;
+    let wrongGuess = false;
+    let reportedId = null; // کسی که در گزارش نهایی انتخاب شده
+    let treasureStage = 'locked';
+
+    function showScreen(name) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById('screen-' + name).classList.add('active');
+      stage = name;
+      if (name === 'cases') renderSuspects();
+      if (name === 'door') renderKeypad();
+      if (name === 'room') renderRoom();
+      if (name === 'final') renderFinal();
+    }
+
+    function closeModal(name) {
+      document.getElementById('modal-' + name).classList.add('hidden');
+    }
+
+    function openModal(name) {
+      if (name === 'treasure') {
+        // گاوصندوق فقط بعد از ۳ سرنخ دیگر باز می‌شود
+        const required = ['phone', 'diary', 'report'];
+        const ready = required.every(id => completed.has(id));
+        if (!ready) {
+          // باز کن ولی پیام قفل نشان بده
+          document.getElementById('modal-treasure').classList.remove('hidden');
+          treasureStage = 'locked';
+          renderTreasure(true); // true = هنوز قفل است به خاطر سرنخ‌ها
+          return;
+        }
+      }
+      document.getElementById('modal-' + name).classList.remove('hidden');
+      if (name === 'phone') { activeChat = null; visibleMessages = 0; renderPhone(); }
+      if (name === 'diary') { diaryPage = 0; viewedDiaryPages = new Set([0]); renderDiary(); }
+      if (name === 'report') { selectedReportId = null; reportSubmitted = false; wrongGuess = false; renderReport(); }
+      if (name === 'treasure') { treasureStage = 'locked'; renderTreasure(false); }
+    }
+
+    function markComplete(id) {
+      completed.add(id);
+      const el = document.getElementById('completed-count');
+      if (el) el.textContent = completed.size;
+      if (stage === 'room') renderRoom();
+    }
+
+    /* ----- اینترو ----- */
+    function startIntro() {
+      const lines = introText.split('\n').filter(l => l.trim());
+      const container = document.getElementById('intro-lines');
+      container.innerHTML = '';
+      let idx = 0;
+      function showNext() {
+        if (idx < lines.length) {
+          const line = lines[idx];
+          const p = document.createElement('p');
+          p.className = 'animate-fade-in-up';
+          p.style.cssText = 'font-size:clamp(1rem,3vw,1.25rem);line-height:1.75;';
+          if (line.includes('کارآگاه')) p.style.cssText += 'color:#ef4444;font-weight:700;';
+          else if (line.includes('به مأموریت')) p.style.cssText += 'color:#ca8a04;font-weight:700;font-size:1.5rem;margin-top:1rem;';
+          else p.style.cssText += 'color:#d1d5db;';
+          p.textContent = line;
+          container.appendChild(p);
+          idx++;
+          setTimeout(showNext, idx === 1 ? 500 : 800);
+        } else {
+          setTimeout(() => {
+            const btn = document.getElementById('btn-intro-continue');
+            btn.style.display = 'inline-block';
+            btn.classList.add('animate-fade-in-up');
+          }, 1000);
+        }
+      }
+      setTimeout(showNext, 500);
+    }
+
+    document.getElementById('btn-intro-continue').onclick = () => showScreen('cases');
+
+    /* ----- پرونده مظنونان ----- */
+    function renderSuspects() {
+      const grid = document.getElementById('suspects-grid');
+      grid.innerHTML = '';
+      suspects.forEach((s, i) => {
+        const isReviewed = reviewedIds.has(s.id);
+        const card = document.createElement('button');
+        card.style.cssText = `position:relative;background:linear-gradient(to bottom,#111827,#000);border:2px solid ${isReviewed ? 'rgba(20,83,45,0.5)' : '#1f2937'};border-radius:0.5rem;overflow:hidden;text-align:right;cursor:pointer;transition:all 0.3s;animation:fadeInUp 0.6s ease forwards;animation-delay:${i*0.15}s;opacity:0;`;
+        card.onmouseover = () => { card.style.transform = 'scale(1.05)'; card.style.borderColor = '#b91c1c'; };
+        card.onmouseout = () => { card.style.transform = 'scale(1)'; card.style.borderColor = isReviewed ? 'rgba(20,83,45,0.5)' : '#1f2937'; };
+        card.onclick = () => openSuspectModal(s);
+        card.innerHTML = `
+          <div style="position:relative;height:14rem;overflow:hidden;">
+            <img src="${s.photo}" alt="${s.name}" style="width:100%;height:100%;object-fit:cover;opacity:0.6;">
+            <div style="position:absolute;inset:0;background:linear-gradient(to top,#000,rgba(0,0,0,0.4),transparent);"></div>
+            <div style="position:absolute;top:0.75rem;right:0.75rem;">
+              <span style="font-size:0.75rem;padding:0.25rem 0.5rem;border-radius:0.25rem;${isReviewed ? 'background:rgba(20,83,45,0.6);color:#4ade80;' : 'background:rgba(127,29,29,0.6);color:#f87171;animation:pulse 2s infinite;'}">${isReviewed ? 'خونده شد' : 'خونده نشده'}</span>
+            </div>
+            <div style="position:absolute;bottom:0.75rem;right:0.75rem;left:0.75rem;">
+              <div style="font-size:1.25rem;font-weight:700;color:#fff;">${s.name}</div>
+              <div style="font-size:0.75rem;color:#9ca3af;">${s.title}</div>
+            </div>
+          </div>
+          <div style="padding:0.75rem;display:flex;align-items:center;justify-content:space-between;">
+            <span style="font-size:0.75rem;color:#6b7280;">سن: ${s.age}</span>
+            <span style="font-size:0.75rem;color:#9ca3af;">مشاهده مصاحبه</span>
+          </div>`;
+        grid.appendChild(card);
+      });
+      updateCasesButton();
+    }
+
+    function openSuspectModal(s) {
+      reviewedIds.add(s.id);
+      document.getElementById('reviewed-count').textContent = reviewedIds.size;
+      updateCasesButton();
+      const content = document.getElementById('suspect-modal-content');
+      content.innerHTML = `
+        <div style="position:relative;height:16rem;overflow:hidden;">
+          <img src="${s.photo}" alt="${s.name}" style="width:100%;height:100%;object-fit:cover;opacity:0.5;">
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,#000,rgba(0,0,0,0.6),transparent);"></div>
+          <div style="position:absolute;bottom:1rem;right:1.5rem;">
+            <div class="classified-stamp" style="margin-bottom:0.5rem;font-size:0.875rem;">INTERVIEW</div>
+            <h3 style="font-size:1.875rem;font-weight:900;color:#fff;">${s.name}</h3>
+            <p style="color:#9ca3af;">${s.title} | ${s.age} سال</p>
+          </div>
+        </div>
+        <div style="padding:1.5rem;display:flex;flex-direction:column;gap:1.25rem;">
+          <h4 style="font-size:0.875rem;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:-0.5rem;">متن مصاحبه</h4>
+          <div style="color:#d1d5db;line-height:2;font-size:0.95rem;white-space:pre-line;">${s.text}</div>
+        </div>`;
+      document.getElementById('modal-suspect').classList.remove('hidden');
+      renderSuspects();
+    }
+
+    function closeSuspectModal() {
+      document.getElementById('modal-suspect').classList.add('hidden');
+    }
+
+    function updateCasesButton() {
+      const btn = document.getElementById('btn-cases-continue');
+      const all = reviewedIds.size === suspects.length;
+      if (all) {
+        btn.disabled = false;
+        btn.style.cssText = 'padding:1rem 2.5rem;border:2px solid #b91c1c;color:#e5e7eb;background:transparent;cursor:pointer;letter-spacing:0.2em;font-size:0.875rem;text-transform:uppercase;transition:all 0.3s;';
+        btn.textContent = '→ ورود به اتاق قربانی';
+        btn.onmouseover = () => { btn.style.background = 'rgba(127,29,29,0.3)'; btn.style.borderColor = '#ef4444'; };
+        btn.onmouseout = () => { btn.style.background = 'transparent'; btn.style.borderColor = '#b91c1c'; };
+        btn.onclick = () => showScreen('door');
+      }
+    }
+
+    /* ----- کی‌پد ----- */
+    function renderKeypad() {
+      const keys = ['1','2','3','4','5','6','7','8','9','','0','del'];
+      const container = document.getElementById('keypad-keys');
+      container.innerHTML = '';
+      keys.forEach(key => {
+        if (key === '') { container.appendChild(document.createElement('div')); return; }
+        const btn = document.createElement('button');
+        btn.className = 'keypad-btn';
+        btn.style.cssText = 'aspect-ratio:1;border-radius:0.75rem;background:rgba(17,24,39,0.8);border:1px solid #1f2937;display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:700;color:#d1d5db;cursor:pointer;transition:all 0.15s;';
+        if (key === 'del') {
+          btn.innerHTML = '⌫';
+          btn.onclick = handleDelete;
+        } else {
+          btn.textContent = key;
+          btn.onclick = () => handleKey(key);
+        }
+        btn.onmouseover = () => { btn.style.background = '#1f2937'; btn.style.color = '#fff'; };
+        btn.onmouseout = () => { btn.style.background = 'rgba(17,24,39,0.8)'; btn.style.color = '#d1d5db'; };
+        container.appendChild(btn);
+      });
+      updatePinDots();
+    }
+
+    function updatePinDots() {
+      const dots = document.querySelectorAll('.pin-dot');
+      dots.forEach((d, i) => {
+        if (pinError) {
+          d.style.background = '#dc2626';
+          d.style.borderColor = '#ef4444';
+        } else if (pinInput.length > i) {
+          d.style.background = '#b91c1c';
+          d.style.borderColor = '#dc2626';
+        } else {
+          d.style.background = 'transparent';
+          d.style.borderColor = '#374151';
+        }
+      });
+    }
+
+    function handleKey(key) {
+      if (pinError) { pinError = false; pinInput = key; document.getElementById('keypad-error').style.display = 'none'; updatePinDots(); return; }
+      if (pinInput.length < 4) {
+        pinInput += key;
+        updatePinDots();
+        if (pinInput.length === 4) {
+          setTimeout(() => {
+            if (pinInput === CORRECT_CODE) {
+              showScreen('room');
+            } else {
+              pinError = true;
+              pinAttempts++;
+              document.getElementById('keypad-error').style.display = 'block';
+              document.getElementById('keypad-box').classList.add('animate-shake');
+              updatePinDots();
+              setTimeout(() => {
+                pinInput = '';
+                pinError = false;
+                document.getElementById('keypad-error').style.display = 'none';
+                document.getElementById('keypad-box').classList.remove('animate-shake');
+                updatePinDots();
+                if (pinAttempts >= 3) document.getElementById('keypad-hint').style.display = 'block';
+              }, 600);
+            }
+          }, 200);
+        }
+      }
+    }
+
+    function handleDelete() {
+      if (pinError) { pinError = false; pinInput = ''; document.getElementById('keypad-error').style.display = 'none'; }
+      else pinInput = pinInput.slice(0, -1);
+      updatePinDots();
+    }
+
+    /* ----- اتاق ----- */
+    function renderRoom() {
+      const area = document.getElementById('hotspots-area');
+      area.innerHTML = '';
+      const btns = document.getElementById('hotspot-buttons');
+      btns.innerHTML = '';
+      document.getElementById('completed-count').textContent = completed.size;
+
+      roomHotspots.forEach(spot => {
+        const isDone = completed.has(spot.id);
+        // هات‌اسپات روی تصویر
+        const hs = document.createElement('div');
+        hs.className = 'hotspot';
+        hs.style.left = spot.x + '%';
+        hs.style.top = spot.y + '%';
+        hs.onclick = () => openModal(spot.id);
+        if (isDone) {
+          const check = document.createElement('div');
+          check.style.cssText = 'position:absolute;top:-0.25rem;right:-0.25rem;z-index:20;width:1.25rem;height:1.25rem;background:#22c55e;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.7rem;';
+          check.textContent = '✓';
+          hs.appendChild(check);
+        }
+        // تولتیپ
+        hs.onmouseenter = () => {
+          const tip = document.createElement('div');
+          tip.id = 'tip-' + spot.id;
+          tip.style.cssText = 'position:absolute;top:3rem;left:50%;transform:translateX(-50%);white-space:nowrap;background:rgba(0,0,0,0.9);border:1px solid #374151;border-radius:0.5rem;padding:0.5rem 0.75rem;z-index:20;animation:fadeIn 0.3s;';
+          tip.innerHTML = `<div style="color:#e5e7eb;font-size:0.875rem;">${spot.label}</div><p style="font-size:0.75rem;color:#6b7280;margin-top:0.25rem;max-width:200px;white-space:normal;">${spot.description}</p>`;
+          hs.parentElement.appendChild(tip);
+        };
+        hs.onmouseleave = () => { const t = document.getElementById('tip-' + spot.id); if (t) t.remove(); };
+        area.appendChild(hs);
+
+        // دکمه پایین
+        const btn = document.createElement('button');
+        btn.style.cssText = `display:flex;align-items:center;gap:0.5rem;padding:0.75rem 1rem;border-radius:0.5rem;border:2px solid ${isDone ? 'rgba(22,101,52,0.5)' : '#1f2937'};background:${isDone ? 'rgba(5,46,22,0.2)' : 'rgba(0,0,0,0.6)'};color:${isDone ? '#4ade80' : '#d1d5db'};font-size:0.875rem;cursor:pointer;transition:all 0.3s;`;
+        btn.innerHTML = `${spot.label}${isDone ? ' ✓' : ''}`;
+        btn.onclick = () => openModal(spot.id);
+        btn.onmouseover = () => { if (!isDone) { btn.style.borderColor = '#b91c1c'; btn.style.color = '#f87171'; } };
+        btn.onmouseout = () => { if (!isDone) { btn.style.borderColor = '#1f2937'; btn.style.color = '#d1d5db'; } };
+        btns.appendChild(btn);
+      });
+
+      const cluesReady = ['phone','diary','report'].every(id => completed.has(id));
+      document.getElementById('all-done-msg').style.display = cluesReady && !completed.has('treasure') ? 'block' : 'none';
+    }
+
+    /* ----- مودال گوشی ----- */
+    function renderPhone() {
+      const content = document.getElementById('phone-content');
+      if (!activeChat) {
+        // لیست چت‌ها
+        content.innerHTML = `
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:2rem 1rem 0.75rem;background:#17212b;border-bottom:1px solid #1f2937;">
+            <button onclick="closeModal('phone')" style="color:#6b7280;background:none;border:none;cursor:pointer;font-size:1.25rem;">✕</button>
+            <div style="text-align:center;"><div style="font-size:0.875rem;font-weight:700;color:#fff;">تلگرام</div><div style="font-size:0.75rem;color:#6b7280;">${telegramChats.length} چت</div></div>
+            <div style="width:1.25rem;"></div>
+          </div>
+          <div style="padding:0.5rem 0.75rem;background:#17212b;border-bottom:1px solid #1f2937;">
+            <div style="display:flex;align-items:center;gap:0.5rem;background:#0e1621;border-radius:9999px;padding:0.5rem 0.75rem;">
+              <span style="color:#4b5563;font-size:0.875rem;">🔍 جستجو</span>
+            </div>
+          </div>
+          <div style="flex:1;overflow-y:auto;" class="no-scrollbar" id="chat-list"></div>
+`;
+        const list = document.getElementById('chat-list');
+        telegramChats.forEach(chat => {
+          const isRead = readChats.has(chat.id);
+          const row = document.createElement('button');
+          row.style.cssText = 'width:100%;display:flex;align-items:center;gap:0.75rem;padding:0.75rem;background:transparent;border:none;border-bottom:1px solid rgba(31,41,55,0.5);cursor:pointer;text-align:right;';
+          row.onmouseover = () => row.style.background = '#17212b';
+          row.onmouseout = () => row.style.background = 'transparent';
+          row.onclick = () => { activeChat = chat; visibleMessages = 0; renderPhone(); animateMessages(); };
+          row.innerHTML = `
+            <div style="position:relative;flex-shrink:0;">
+              ${avatarImg(chat.name, chat.avatar, '3rem')}
+              ${isRead ? '<div style="position:absolute;bottom:-2px;left:-2px;width:1rem;height:1rem;background:#16a34a;border-radius:50%;border:2px solid #0e1621;display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.5rem;">✓</div>' : ''}
+            </div>
+            <div style="flex:1;min-width:0;">
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <span style="font-size:0.875rem;font-weight:700;color:#e5e7eb;">${chat.name}</span>
+                <span style="font-size:0.625rem;color:#4b5563;">${chat.lastTime}</span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:0.5rem;margin-top:0.125rem;">
+                <p style="font-size:0.75rem;color:#6b7280;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;">${chat.lastMessage}</p>
+                ${!isRead && chat.unread > 0 ? `<span style="flex-shrink:0;width:1.25rem;height:1.25rem;background:#2563eb;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.625rem;color:#fff;font-weight:700;">${chat.unread}</span>` : ''}
+              </div>
+            </div>
+            <span style="color:#374151;">‹</span>`;
+          list.appendChild(row);
+        });
+      } else {
+        // نمای چت — شبیه تلگرام موبایل
+        const isGalaxy = activeChat.wallpaper === 'galaxy';
+        const bgStyle = isGalaxy
+          ? "background:#0a0a12 url('https://images.pexels.com/photos/1169754/pexels-photo-1169754.jpeg?auto=compress&cs=tinysrgb&h=900&w=600') center/cover no-repeat;"
+          : 'background:#0e1621;';
+        content.innerHTML = `
+          <div style="display:flex;align-items:center;gap:0.5rem;padding:2rem 0.75rem 0.6rem;background:linear-gradient(135deg,#4a1a6b,#2d1b4e);border-bottom:1px solid rgba(255,255,255,0.08);z-index:5;">
+            <button onclick="activeChat=null;renderPhone();" style="color:#e0d0f0;background:none;border:none;cursor:pointer;font-size:1.35rem;padding:0 0.25rem;">‹</button>
+            ${avatarImg(activeChat.name, activeChat.avatar, '2.4rem')}
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:0.95rem;font-weight:700;color:#fff;">${activeChat.name}</div>
+              <div style="font-size:0.65rem;color:rgba(255,255,255,0.55);">last seen recently</div>
+            </div>
+            <span style="color:rgba(255,255,255,0.5);font-size:1.1rem;padding:0 0.3rem;">📞</span>
+            <span style="color:rgba(255,255,255,0.5);font-size:1.2rem;padding:0 0.3rem;">⋮</span>
+          </div>
+          ${activeChat.pinned ? `
+          <a href="${activeChat.pinned}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" style="display:flex;align-items:center;gap:0.6rem;padding:0.45rem 0.75rem;background:#17212b;border-bottom:1px solid rgba(255,255,255,0.06);text-decoration:none;direction:ltr;z-index:4;cursor:pointer;">
+            <div style="width:2px;align-self:stretch;min-height:2rem;background:#5eaaf0;border-radius:2px;flex-shrink:0;"></div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:0.8rem;font-weight:700;color:#5eaaf0;">Pinned Message</div>
+              <div style="font-size:0.8rem;color:#9ca3af;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${activeChat.pinned}</div>
+            </div>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8b96a3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M3 5h10M3 12h6M3 19h10"/><path d="M15 10l5-5M17 4l3 3M14 13l-3 3"/><path d="M15 9l4 4"/></svg>
+          </a>` : ''}
+          <div id="chat-messages" class="no-scrollbar" style="flex:1;overflow-y:auto;padding:0.75rem 0.6rem;display:flex;flex-direction:column;gap:0.4rem;${bgStyle}"></div>
+          <div style="display:flex;align-items:center;gap:0.5rem;padding:0.55rem 0.7rem;background:#17212b;border-top:1px solid #1f2937;">
+            <span style="font-size:1.3rem;opacity:0.6;">😊</span>
+            <div style="flex:1;background:#0e1621;border-radius:1.2rem;padding:0.45rem 0.9rem;color:#6b7280;font-size:0.85rem;">Message</div>
+            <span style="font-size:1.2rem;opacity:0.5;">📎</span>
+            <span style="width:2.2rem;height:2.2rem;border-radius:50%;background:#5288c1;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1rem;">🎤</span>
+          </div>`;
+        animateMessages();
+      }
+    }
+
+    function avatarImg(name, src, size) {
+      // اگه avatar خالی بود یا لود نشد، یه دایره با حرف اول اسم نشون داده می‌شه
+      const initial = (name || '?').trim().charAt(0).toUpperCase();
+      const fallback = `<div style="width:${size};height:${size};border-radius:50%;background:#374151;display:flex;align-items:center;justify-content:center;color:#9ca3af;font-weight:700;font-size:calc(${size} * 0.4);">${initial}</div>`;
+      if (!src) return fallback;
+      return `<img src="${src}" alt="${name}" style="width:${size};height:${size};border-radius:50%;object-fit:cover;" data-fallback-initial="${initial}" data-fallback-size="${size}" onerror="avatarFallback(this)">`;
+    }
+    function avatarFallback(img) {
+      const div = document.createElement('div');
+      const size = img.getAttribute('data-fallback-size');
+      div.style.cssText = `width:${size};height:${size};border-radius:50%;background:#374151;display:flex;align-items:center;justify-content:center;color:#9ca3af;font-weight:700;font-size:calc(${size} * 0.4);`;
+      div.textContent = img.getAttribute('data-fallback-initial');
+      img.replaceWith(div);
+    }
+
+    function renderChatMessage(msg) {
+      // جداکننده تاریخ
+      if (msg.type === 'date') {
+        return `<div style="display:flex;justify-content:center;margin:0.6rem 0;">
+          <span style="background:rgba(0,0,0,0.45);color:#c8c8d0;font-size:0.7rem;padding:0.25rem 0.85rem;border-radius:1rem;">${msg.text}</span>
+        </div>`;
+      }
+
+      const isMe = msg.sender === 'me';
+      const align = isMe ? 'flex-start' : 'flex-end';
+      // در RTL: me = راست (آبی)، them = چپ (خاکستری) — مثل تلگرام فارسی
+      // اسکرین‌شات: پیام‌های آبی سمت راست صفحه (me)، خاکستری سمت چپ (them)
+      // با dir=rtl و justify-start برای me درست می‌شود اگر bubble-out آبی باشد
+
+      // تیک خوانده‌شدن فقط زیر پیام‌های خودم نشون داده می‌شه (مثل تلگرام واقعی)
+      const ticks = isMe ? ' ✓✓' : '';
+
+      // اگه msg.replyTo پر باشه، یه باکس کوچیک نقل‌قول بالای پیام نشون داده می‌شه
+      const replyHtml = msg.replyTo ? `
+        <div style="border-right:3px solid rgba(255,255,255,0.5);padding:0.15rem 0.5rem;margin-bottom:0.35rem;background:rgba(0,0,0,0.15);border-radius:0.25rem;">
+          <div style="color:#8ab4f8;font-size:0.7rem;font-weight:700;">${msg.replyTo.name}</div>
+          <div style="color:rgba(255,255,255,0.6);font-size:0.7rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${msg.replyTo.text}</div>
+        </div>` : '';
+
+      let inner = '';
+
+      if (msg.type === 'text' || msg.type === 'emoji') {
+        const bubbleClass = isMe ? 'telegram-bubble-out' : 'telegram-bubble-in';
+        const fontSize = msg.type === 'emoji' ? '1.6rem' : '0.9rem';
+        inner = `<div class="${bubbleClass}" style="max-width:80%;padding:0.45rem 0.7rem;">
+          ${replyHtml}
+          <div style="font-size:${fontSize};color:#f3f4f6;line-height:1.45;word-break:break-word;">${msg.text}</div>
+          <div style="font-size:0.6rem;color:rgba(255,255,255,0.4);margin-top:0.2rem;text-align:left;direction:ltr;">${msg.time || ''}${ticks}</div>
+        </div>`;
+      }
+
+      else if (msg.type === 'voice') {
+        // ویس دایره‌ای مثل اسکرین‌شات
+        const bubbleClass = isMe ? 'telegram-bubble-out' : 'telegram-bubble-in';
+        inner = `<div class="${bubbleClass}" style="max-width:80%;padding:0.45rem 0.7rem;">
+          ${replyHtml}
+          <div style="display:flex;align-items:center;gap:0.6rem;">
+            <div style="width:2.5rem;height:2.5rem;flex-shrink:0;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;">
+              <span style="font-size:1rem;color:#fff;">▶</span>
+            </div>
+            <div style="flex:1;height:1.5rem;background:repeating-linear-gradient(90deg,rgba(255,255,255,0.35) 0 2px,transparent 2px 5px);border-radius:0.25rem;"></div>
+          </div>
+          <div style="font-size:0.65rem;color:rgba(255,255,255,0.5);margin-top:0.25rem;direction:ltr;text-align:left;">${msg.duration || '0:00'} · ${msg.time || ''}${ticks}</div>
+        </div>`;
+      }
+
+      else if (msg.type === 'sticker') {
+        // اگر msg.src پر شده باشه، عکس واقعی نشون داده می‌شه؛ وگرنه جای‌گذار خاکستری
+        inner = `<div style="max-width:55%;">
+          ${replyHtml}
+          <div style="background:#1a1a22;border-radius:0.75rem;overflow:hidden;${msg.src ? '' : 'border:1px dashed #555;'}min-height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.75rem;gap:0.4rem;">
+            ${msg.src
+              ? `<img src="${msg.src}" alt="${msg.stickerLabel || 'استیکر'}" style="width:130px;height:130px;object-fit:contain;" onerror="this.replaceWith(Object.assign(document.createElement('div'),{style:'width:110px;height:110px;background:#2a2a35;border-radius:0.5rem;display:flex;align-items:center;justify-content:center;color:#f87171;font-size:0.65rem;text-align:center;line-height:1.3;padding:0.4rem;',innerHTML:'لینک عکس اشتباهه یا فایل پیدا نشد:<br>${msg.src}'}))">`
+              : `<div style="width:110px;height:110px;background:#2a2a35;border-radius:0.5rem;display:flex;align-items:center;justify-content:center;color:#666;font-size:0.7rem;text-align:center;line-height:1.3;">
+              ${msg.stickerLabel || 'استیکر'}<br><span style="font-size:0.6rem;opacity:0.6;">عکس را اینجا بگذار</span>
+            </div>`}
+            ${msg.caption ? `<div style="font-size:0.8rem;color:#ddd;margin-top:0.25rem;">${msg.caption}</div>` : ''}
+          </div>
+          <div style="font-size:0.6rem;color:rgba(255,255,255,0.4);margin-top:0.2rem;text-align:left;direction:ltr;">${msg.time || ''}${ticks}</div>
+        </div>`;
+      }
+
+      else if (msg.type === 'photo') {
+        // عکس ساده. اگر msg.blurred باشه، شبیه عکسی که هنوز دانلود نشده (تار + آیکن دانلود) نشون داده می‌شه
+        inner = `<div style="max-width:70%;">
+          ${replyHtml}
+          <div style="position:relative;border-radius:0.75rem;overflow:hidden;background:#1a1a22;${msg.src ? '' : 'border:1px dashed #555;'}min-height:160px;display:flex;align-items:center;justify-content:center;">
+            ${msg.src
+              ? `<img src="${msg.src}" alt="عکس" style="width:100%;display:block;${msg.blurred ? 'filter:blur(18px);' : ''}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">`
+              : ''}
+            <div style="${msg.src ? 'display:none;' : ''}position:${msg.src ? 'absolute' : 'static'};inset:0;flex-direction:column;align-items:center;justify-content:center;color:#666;font-size:0.7rem;gap:0.3rem;padding:2rem;text-align:center;">
+              <div style="font-size:1.5rem;">🖼</div>
+              <div>عکس را اینجا بگذار</div>
+            </div>
+            ${msg.blurred ? `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+              <div style="width:2.75rem;height:2.75rem;border-radius:50%;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.1rem;">↓</div>
+            </div>` : ''}
+            ${msg.caption ? `<div style="position:absolute;bottom:0;right:0;left:0;background:linear-gradient(to top,rgba(0,0,0,0.7),transparent);padding:1.5rem 0.6rem 0.4rem;color:#fff;font-size:0.8rem;">${msg.caption}</div>` : ''}
+          </div>
+          <div style="font-size:0.6rem;color:rgba(255,255,255,0.4);margin-top:0.2rem;text-align:left;direction:ltr;">${msg.time || ''}${ticks}</div>
+        </div>`;
+      }
+
+      else if (msg.type === 'reel') {
+        // کارت اشتراک‌گذاری ریلز اینستاگرام. عکس/تصویر داخلش را خودت جایگزین کن
+        inner = `<div style="max-width:72%;">
+          ${replyHtml}
+          <div style="border-radius:0.9rem;overflow:hidden;background:#000;position:relative;">
+            <div style="position:relative;aspect-ratio:9/14;background:#111;display:flex;align-items:center;justify-content:center;">
+              ${msg.src
+                ? `<img src="${msg.src}" alt="ریلز" style="width:100%;height:100%;object-fit:cover;">`
+                : `<div style="color:#666;font-size:0.7rem;text-align:center;padding:1rem;">🎬<br>تصویر ریلز را اینجا بگذار</div>`}
+              <div style="position:absolute;top:0.5rem;right:0.6rem;left:0.6rem;display:flex;align-items:center;justify-content:space-between;color:#fff;font-size:0.75rem;">
+                <span>+</span>
+                <span>Reels</span>
+                <span>${msg.account || ''}</span>
+              </div>
+              ${msg.overlayText ? `<div style="position:absolute;bottom:3.2rem;right:0.6rem;left:0.6rem;color:#fff;font-size:0.8rem;font-weight:700;text-shadow:0 1px 3px #000;">${msg.overlayText}</div>` : ''}
+              ${msg.igAccount ? `<div style="position:absolute;bottom:0.6rem;right:0.6rem;left:2.5rem;display:flex;align-items:center;gap:0.4rem;color:#fff;font-size:0.7rem;">
+                <span style="width:1.25rem;height:1.25rem;border-radius:50%;background:#444;display:inline-block;"></span>
+                <span>${msg.igAccount}</span>
+              </div>` : ''}
+              <div style="position:absolute;left:0.5rem;bottom:0.6rem;display:flex;flex-direction:column;align-items:center;gap:0.5rem;color:#fff;font-size:0.65rem;">
+                <span>♡<br>${msg.likes || ''}</span>
+              </div>
+            </div>
+          </div>
+          ${msg.caption ? `<div style="font-size:0.85rem;color:#f3f4f6;margin-top:0.3rem;">${msg.caption}</div>` : ''}
+          <div style="font-size:0.6rem;color:rgba(255,255,255,0.4);margin-top:0.2rem;text-align:left;direction:ltr;">${msg.time || ''}${ticks}</div>
+        </div>`;
+      }
+
+      else if (msg.type === 'video') {
+        // ویدیو — کلیک = باز شدن تمام‌صفحه و پخش (مثل تلگرام)
+        const fromLabel = msg.forwardedFrom ? `Forwarded from ${msg.forwardedFrom}` : (msg.label || 'Video');
+        const srcAttr = msg.src ? `data-video-src="${String(msg.src).replace(/"/g, '&quot;')}"` : '';
+        const videoInner = msg.src
+          ? `<video src="${msg.src}" style="width:100%;height:100%;object-fit:cover;display:block;min-height:120px;background:#000;pointer-events:none;" playsinline preload="metadata"></video>
+             <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.25);pointer-events:none;">
+               <div style="width:3rem;height:3rem;border-radius:50%;background:rgba(0,0,0,0.65);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.25rem;">▶</div>
+             </div>`
+          : `<div style="text-align:center;color:#666;padding:1.5rem;">
+              <div style="font-size:2rem;margin-bottom:0.3rem;">▶</div>
+              <div style="font-size:0.7rem;">ویدیو ${msg.duration || ''}</div>
+              <div style="font-size:0.6rem;opacity:0.6;margin-top:0.2rem;">src را در پیام بگذار</div>
+            </div>`;
+        inner = `<div style="max-width:78%;">
+          ${replyHtml}
+          <div class="chat-video-card" ${srcAttr} title="برای باز کردن ویدیو کلیک کن" style="background:#1c2733;border-radius:0.75rem;overflow:hidden;border:1px solid #2a3a4a;cursor:${msg.src ? 'pointer' : 'default'};">
+            <div style="padding:0.35rem 0.6rem;font-size:0.65rem;color:#8ab4f8;display:flex;align-items:center;gap:0.3rem;">
+              <span>↗</span> ${fromLabel}
+            </div>
+            <div style="position:relative;background:#0d1117;aspect-ratio:16/10;min-height:120px;overflow:hidden;">
+              ${videoInner}
+              <span style="position:absolute;bottom:0.4rem;left:0.5rem;background:rgba(0,0,0,0.7);color:#fff;font-size:0.65rem;padding:0.15rem 0.4rem;border-radius:0.3rem;direction:ltr;">${msg.duration || '0:00'}</span>
+            </div>
+            <div style="padding:0.3rem 0.6rem;display:flex;justify-content:space-between;align-items:center;">
+              <span style="font-size:0.6rem;color:rgba(255,255,255,0.35);">${msg.src ? 'کلیک = باز کردن' : ''}</span>
+              <span style="font-size:0.6rem;color:rgba(255,255,255,0.4);direction:ltr;">${msg.time || ''}${ticks}</span>
+            </div>
+          </div>
+        </div>`;
+      }
+
+      else if (msg.type === 'gif') {
+        // ویدیویی که مثل گیف خودکار و مداوم پلی می‌شه (autoplay+loop+muted، بدون کنترل)
+        // خودت src رو با ویدیوی واقعی جایگزین کن
+        const srcAttr = msg.src ? `data-video-src="${String(msg.src).replace(/"/g, '&quot;')}"` : '';
+        inner = `<div style="max-width:65%;">
+          ${replyHtml}
+          <div class="chat-video-card" ${srcAttr} title="${msg.src ? 'برای باز کردن کلیک کن' : ''}" style="border-radius:0.9rem;overflow:hidden;background:#000;position:relative;cursor:${msg.src ? 'pointer' : 'default'};">
+            ${msg.src
+              ? `<video src="${msg.src}" style="width:100%;max-height:280px;display:block;object-fit:cover;" autoplay loop muted playsinline></video>
+                 <span style="position:absolute;bottom:0.4rem;right:0.5rem;background:rgba(0,0,0,0.55);color:#fff;font-size:0.6rem;padding:0.1rem 0.35rem;border-radius:0.3rem;">GIF</span>`
+              : `<div style="min-height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#666;font-size:0.7rem;gap:0.3rem;">
+                  <div style="font-size:1.5rem;">🎞</div>
+                  <div>src ویدیوی گیف را اینجا بگذار</div>
+                </div>`}
+          </div>
+          <div style="font-size:0.6rem;color:rgba(255,255,255,0.4);margin-top:0.2rem;text-align:left;direction:ltr;">${msg.time || ''}${ticks}</div>
+        </div>`;
+      }
+
+      else {
+        // fallback متن
+        inner = `<div class="${isMe ? 'telegram-bubble-out' : 'telegram-bubble-in'}" style="max-width:80%;padding:0.45rem 0.7rem;">
+          ${replyHtml}
+          <div style="font-size:0.9rem;color:#f3f4f6;">${msg.text || ''}</div>
+          <div style="font-size:0.6rem;color:rgba(255,255,255,0.4);margin-top:0.2rem;text-align:left;direction:ltr;">${msg.time || ''}${ticks}</div>
+        </div>`;
+      }
+
+      return `<div class="animate-fade-in-up" style="display:flex;justify-content:${align};">${inner}</div>`;
+    }
+
+    function animateMessages() {
+      // بدون انیمیشن: همه‌ی پیام‌ها یکجا نمایش داده می‌شن و چت پایین‌ترین پیام باز میشه (مثل تلگرام)
+      if (!activeChat) return;
+      const container = document.getElementById('chat-messages');
+      if (!container) return;
+      container.innerHTML = activeChat.messages
+        .map(m => renderChatMessage(m).replace(/animate-fade-in-up/g, ''))
+        .join('');
+      visibleMessages = activeChat.messages.length;
+      const toBottom = () => { container.scrollTop = container.scrollHeight; };
+      toBottom();
+      // اگه عکس/ویدیو دیر لود شد، دوباره بیا پایین
+      container.querySelectorAll('img').forEach(el => el.addEventListener('load', toBottom));
+      container.querySelectorAll('video').forEach(el => el.addEventListener('loadedmetadata', toBottom));
+      if (!readChats.has(activeChat.id)) {
+        readChats.add(activeChat.id);
+        if (readChats.size === telegramChats.length) {
+          setTimeout(() => { markComplete('phone'); }, 1000);
+        }
+      }
+    }
+
+    /* ----- مودال دفترچه خاطرات ----- */
+    function renderDiary() {
+      const page = diaryPages[diaryPage];
+      const content = document.getElementById('diary-content');
+      const allRead = viewedDiaryPages.size === diaryPages.length;
+
+      content.innerHTML = `
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:0.75rem 1rem;background:#1a120c;border-bottom:1px solid #5c4033;">
+          <div style="display:flex;align-items:center;gap:0.5rem;">
+            <span style="font-size:1.1rem;">📔</span>
+            <span style="font-size:0.875rem;font-weight:700;color:#f4e8d0;">دفترچه خاطرات</span>
+          </div>
+          <button onclick="closeModal('diary')" style="color:#a89070;background:none;border:none;cursor:pointer;font-size:1.25rem;">✕</button>
+        </div>
+        <div id="diary-page-area" class="diary-page flip-in">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:0.75rem;border-bottom:1px solid rgba(92,64,51,0.3);padding-bottom:0.5rem;">
+            <span style="font-weight:700;font-size:0.95rem;color:#3d2b1f;">${page.title}</span>
+            <span style="font-size:0.75rem;color:#8b6f47;">${page.date}</span>
+          </div>
+          <div class="diary-lines">${page.body}</div>
+          <div style="position:absolute;bottom:0.75rem;left:1rem;font-size:0.7rem;color:#a89070;">
+            ${diaryPage + 1} / ${diaryPages.length}
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:0.75rem 1rem;background:#1a120c;border-top:1px solid #5c4033;gap:0.5rem;">
+          <button class="diary-nav-btn" id="diary-prev" ${diaryPage === 0 ? 'disabled' : ''}>→ صفحه قبل</button>
+          <span style="font-size:0.75rem;color:#a89070;">ورق بزن</span>
+          <button class="diary-nav-btn" id="diary-next" ${diaryPage >= diaryPages.length - 1 ? 'disabled' : ''}>صفحه بعد ←</button>
+        </div>
+        ${allRead ? `<div style="padding:0.6rem 1rem;background:rgba(45,90,39,0.25);border-top:1px solid rgba(45,90,39,0.4);"><div style="font-size:0.8rem;color:#86efac;text-align:center;">✓ تمام صفحات خوانده شد. سرنخ‌ها ثبت شدند.</div></div>` : ''}`;
+
+      document.getElementById('diary-prev').onclick = () => {
+        if (diaryPage > 0) {
+          diaryPage--;
+          viewedDiaryPages.add(diaryPage);
+          renderDiary();
+        }
+      };
+      document.getElementById('diary-next').onclick = () => {
+        if (diaryPage < diaryPages.length - 1) {
+          diaryPage++;
+          viewedDiaryPages.add(diaryPage);
+          renderDiary();
+          if (viewedDiaryPages.size === diaryPages.length) {
+            setTimeout(() => markComplete('diary'), 800);
+          }
+        }
+      };
+
+      // اگر آخرین صفحه است و همه خوانده شده
+      if (allRead && !completed.has('diary')) {
+        setTimeout(() => markComplete('diary'), 500);
+      }
+    }
+
+    /* ----- مودال گزارش ----- */
+    function renderReport() {
+      const content = document.getElementById('report-content');
+      if (reportSubmitted) {
+        content.innerHTML = `
+          <div style="padding:2.5rem 2rem;text-align:center;">
+            <div style="font-size:4rem;color:#22c55e;margin-bottom:1rem;">✓</div>
+            <h3 style="font-size:1.5rem;font-weight:900;color:#4ade80;margin-bottom:0.5rem;">گزارش ارسال شد</h3>
+          </div>`;
+        return;
+      }
+      content.innerHTML = `
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;border-bottom:1px solid #1f2937;position:sticky;top:0;background:#030712;z-index:10;">
+          <div style="display:flex;align-items:center;gap:0.5rem;"><span style="color:#dc2626;">📄</span><span style="font-size:0.875rem;font-weight:700;color:#e5e7eb;">فرم گزارش مظنون</span></div>
+          <button onclick="closeModal('report')" style="color:#6b7280;background:none;border:none;cursor:pointer;font-size:1.25rem;">✕</button>
+        </div>
+        <div style="padding:1.25rem;">
+          <p style="font-size:0.875rem;color:#9ca3af;margin-bottom:1rem;line-height:1.75;">بر اساس شواهد گردآوری‌شده، مظنون اصلی را انتخاب کن. توجه: فقط یک پاسخ صحیح وجود دارد.</p>
+          ${wrongGuess ? `<div style="margin-bottom:1rem;padding:0.75rem;background:rgba(127,29,29,0.3);border:1px solid #991b1b;border-radius:0.5rem;display:flex;align-items:center;gap:0.5rem;"><span style="color:#ef4444;">⚠</span><span style="font-size:0.875rem;color:#f87171;">این شخص مظنون اصلی نیست. شواهد را دوباره بررسی کن.</span></div>` : ''}
+          <div id="report-options" style="display:flex;flex-direction:column;gap:0.5rem;"></div>
+          <button id="btn-submit-report" style="width:100%;margin-top:1.25rem;padding:0.75rem;border-radius:0.5rem;font-weight:700;font-size:0.875rem;letter-spacing:0.05em;border:none;cursor:pointer;background:#1f2937;color:#4b5563;" disabled>ثبت گزارش</button>
+        </div>`;
+      const opts = document.getElementById('report-options');
+      reportSuspects.forEach(s => {
+        const btn = document.createElement('button');
+        const selected = selectedReportId === s.id;
+        btn.style.cssText = `width:100%;text-align:right;padding:0.75rem;border-radius:0.5rem;border:2px solid ${selected?'#dc2626':'#1f2937'};background:${selected?'rgba(127,29,29,0.3)':'rgba(0,0,0,0.4)'};cursor:pointer;display:flex;align-items:center;gap:0.75rem;transition:all 0.2s;${wrongGuess?'opacity:0.5;':''}`;
+        btn.disabled = wrongGuess;
+        btn.onclick = () => { if (!wrongGuess) { selectedReportId = s.id; renderReport(); } };
+        btn.innerHTML = `
+          ${avatarImg(s.name, s.photo, '3rem')}
+          <div style="flex:1;"><div style="font-size:0.875rem;font-weight:700;color:#e5e7eb;">${s.name}</div><div style="font-size:0.75rem;color:#6b7280;">${s.title}</div></div>
+          <div style="width:1.25rem;height:1.25rem;border-radius:50%;border:2px solid ${selected?'#ef4444':'#374151'};background:${selected?'#dc2626':'transparent'};"></div>`;
+        opts.appendChild(btn);
+      });
+      const submitBtn = document.getElementById('btn-submit-report');
+      if (selectedReportId && !wrongGuess) {
+        submitBtn.disabled = false;
+        submitBtn.style.background = '#991b1b';
+        submitBtn.style.color = '#fff';
+        submitBtn.style.cursor = 'pointer';
+        submitBtn.onclick = () => {
+          // فعلاً نتیجه نمایش داده نمی‌شود؛ فقط ثبت می‌شود و در صفحه‌ی آخر اعلام می‌شود
+          reportedId = selectedReportId;
+          reportSubmitted = true;
+          markComplete('report');
+          renderReport();
+          setTimeout(() => closeModal('report'), 2000);
+        };
+      }
+    }
+
+    /* ----- مودال گاوصندوق ----- */
+    // blocked = هنوز ۳ سرنخ کامل نشده
+    function renderTreasure(blocked) {
+      const content = document.getElementById('treasure-content');
+      const headerIcon = treasureStage === 'locked' ? '🔒' : treasureStage === 'opening' ? '🔓' : '🎁';
+      content.innerHTML = `
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;border-bottom:1px solid #1f2937;">
+          <div style="display:flex;align-items:center;gap:0.5rem;"><span>${headerIcon}</span><span style="font-size:0.875rem;font-weight:700;color:#e5e7eb;">گاوصندوق</span></div>
+          <button onclick="closeModal('treasure')" style="color:#6b7280;background:none;border:none;cursor:pointer;font-size:1.25rem;">✕</button>
+        </div>
+        <div id="treasure-body"></div>`;
+      const body = document.getElementById('treasure-body');
+
+      if (blocked || (treasureStage === 'locked' && !['phone','diary','report'].every(id => completed.has(id)))) {
+        const done = ['phone','diary','report'].filter(id => completed.has(id));
+        const labels = { phone: 'گوشی', diary: 'دفترچه', report: 'گزارش' };
+        body.innerHTML = `
+          <div style="padding:2rem;text-align:center;">
+            <div style="position:relative;margin:0 auto 1.5rem;width:12rem;height:8rem;">
+              <img src="${treasureImages.locked}" alt="گاوصندوق" style="width:100%;height:100%;object-fit:cover;border-radius:0.5rem;opacity:0.5;">
+              <div style="position:absolute;inset:0;background:rgba(0,0,0,0.5);border-radius:0.5rem;"></div>
+              <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:2.5rem;">🔒</div>
+            </div>
+            <p style="font-size:0.95rem;color:#f87171;margin-bottom:0.75rem;font-weight:700;">گاوصندوق هنوز قفل است</p>
+            <p style="font-size:0.8rem;color:#9ca3af;margin-bottom:1rem;line-height:1.7;">
+              اول این سه سرنخ را کامل کن، بعد برگرد:
+            </p>
+            <div style="display:flex;flex-direction:column;gap:0.4rem;max-width:14rem;margin:0 auto 1.25rem;text-align:right;">
+              ${['phone','diary','report'].map(id => `
+                <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;color:${completed.has(id)?'#4ade80':'#6b7280'};">
+                  <span>${completed.has(id) ? '✓' : '○'}</span>
+                  <span>${labels[id]}</span>
+                </div>
+              `).join('')}
+            </div>
+            <p style="font-size:0.7rem;color:#4b5563;">پیشرفت: ${done.length} / 3</p>
+            <button onclick="closeModal('treasure')" style="margin-top:1.25rem;padding:0.6rem 1.5rem;background:transparent;border:1px solid #374151;color:#9ca3af;border-radius:0.5rem;cursor:pointer;font-size:0.8rem;">بازگشت به اتاق</button>
+          </div>`;
+      } else if (treasureStage === 'locked') {
+        body.innerHTML = `
+          <div style="padding:2rem;text-align:center;">
+            <div style="position:relative;margin:0 auto 1.5rem;width:12rem;height:8rem;">
+              <img src="${treasureImages.locked}" alt="گاوصندوق" style="width:100%;height:100%;object-fit:cover;border-radius:0.5rem;opacity:0.7;">
+              <div style="position:absolute;inset:0;background:rgba(0,0,0,0.4);border-radius:0.5rem;"></div>
+              <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:2.5rem;animation:pulse 2s infinite;">🔒</div>
+            </div>
+            <p style="font-size:0.875rem;color:#9ca3af;margin-bottom:0.5rem;">گاوصندوقی زیر تخت پنهان شده — شبیه Item Box.</p>
+            <p style="font-size:0.75rem;color:#4b5563;margin-bottom:1.5rem;">قربانی پیام داده: «گاوصندوق همیشه جاییه که یادت میاد» — نیاز به Ink Ribbon؟</p>
+            <p style="font-size:0.75rem;color:#4ade80;margin-bottom:1rem;">✓ هر سه سرنخ کامل شد. حالا می‌توانی باز کنی.</p>
+            <button onclick="unlockTreasure()" style="padding:0.75rem 2rem;background:rgba(113,63,18,0.4);border:2px solid #a16207;color:#facc15;border-radius:0.5rem;cursor:pointer;font-size:0.875rem;letter-spacing:0.05em;transition:all 0.3s;"
+              onmouseover="this.style.background='rgba(133,77,14,0.3)';this.style.borderColor='#eab308'"
+              onmouseout="this.style.background='rgba(113,63,18,0.4)';this.style.borderColor='#a16207'">باز کردن گاوصندوق</button>
+          </div>`;
+      } else if (treasureStage === 'opening') {
+        body.innerHTML = `
+          <div style="padding:3rem;text-align:center;">
+            <div style="position:relative;margin:0 auto 1.5rem;width:12rem;height:8rem;">
+              <img src="${treasureImages.opening}" alt="گاوصندوق باز" style="width:100%;height:100%;object-fit:cover;border-radius:0.5rem;opacity:0.8;">
+              <div style="position:absolute;inset:0;background:rgba(113,63,18,0.2);border-radius:0.5rem;animation:pulse 2s infinite;"></div>
+              <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:3rem;animation:pulse 2s infinite;">🎁</div>
+            </div>
+            <p style="color:#ca8a04;font-size:0.875rem;animation:pulse 2s infinite;">در حال باز شدن...</p>
+          </div>`;
+      } else {
+        const lines = birthdayLetter.split('\n');
+        body.innerHTML = `
+          <div style="padding:1.5rem 2rem;text-align:center;" class="animate-fade-in">
+            <div style="margin-bottom:1.5rem;position:relative;">
+              <img src="${treasureImages.cake}" alt="کیک تولد" style="width:100%;max-width:20rem;margin:0 auto;border-radius:0.75rem;opacity:0.8;display:block;">
+              <div style="position:absolute;inset:0;background:linear-gradient(to top,#000,transparent);border-radius:0.75rem;"></div>
+            </div>
+            <div style="margin-bottom:1rem;">
+              <div style="font-size:2rem;color:#dc2626;margin-bottom:0.5rem;animation:pulse 2s infinite;">❤️</div>
+              <h3 class="animate-glow" style="font-family:'Lalezar','Vazirmatn',sans-serif;font-size:2.4rem;font-weight:400;color:#eab308;margin-bottom:0.25rem;">تولدت مبارک!</h3>
+              <p style="font-size:0.75rem;color:#6b7280;">یک نامه از قربانی — Typewriter Save</p>
+              <div style="margin-top:0.5rem;">
+                <span class="herb-dot herb-green" title="Green Herb"></span>
+                <span class="herb-dot herb-red" title="Red Herb"></span>
+                <span class="ink-ribbon"> • Ink Ribbon ×1</span>
+              </div>
+            </div>
+            <div class="typewriter-box" style="border-radius:0.5rem;padding:1.25rem;margin-bottom:1rem;text-align:right;">
+              <div style="font-size:0.65rem;color:#8b7355;margin-bottom:0.75rem;letter-spacing:0.15em;">— ITEM BOX / TYPEWRITER —</div>
+              ${lines.map((line, i) => {
+                let color = '#d4c4a8';
+                if (line.includes('تولدت مبارک')) color = '#facc15;font-weight:700';
+                else if (line.startsWith('پ.ن') || line.includes('Jill sandwich')) color = '#8b7355;font-size:0.75rem;padding-top:0.5rem';
+                return `<p class="animate-fade-in-up" style="font-size:1.1rem;line-height:2;color:${color};animation-delay:${i*0.15}s;opacity:0;font-family:'Lalezar','Vazirmatn',sans-serif;">${line || '&nbsp;'}</p>`;
+              }).join('')}
+            </div>
+            <div class="umbrella-badge" style="justify-content:center;margin-bottom:1rem;">
+              <div class="umbrella-logo" style="width:20px;height:20px;"></div>
+              <span>Mission Complete — S.T.A.R.S.</span>
+            </div>
+            <button onclick="closeModal('treasure');showScreen('final');window.scrollTo(0,0);" style="padding:0.75rem 2rem;background:rgba(113,63,18,0.3);border:2px solid #a16207;color:#facc15;border-radius:0.5rem;cursor:pointer;font-size:0.875rem;letter-spacing:0.05em;">ادامه</button>
+          </div>`;
+        markComplete('treasure');
+      }
+    }
+
+    /* ----- صفحه‌ی آخر ----- */
+    function renderFinal() {
+      const suspect = reportSuspects.find(x => x.id === reportedId);
+      const ok = !!suspect?.isCulprit;
+      const color = ok ? '#4ade80' : '#f87171';
+      const text = (ok ? finalTexts.correct : finalTexts.wrong).split('\n\n');
+      document.getElementById('final-content').innerHTML = `
+        <div class="animate-fade-in" style="max-width:36rem;width:100%;text-align:center;">
+          <div class="umbrella-badge" style="justify-content:center;margin-bottom:1.5rem;">
+            <div class="umbrella-logo" style="width:24px;height:24px;"></div>
+            <span>Case Closed</span>
+          </div>
+          <div style="font-size:4rem;color:${color};margin-bottom:0.75rem;">${ok ? '✓' : '✕'}</div>
+          <h2 style="font-size:1.75rem;font-weight:900;color:${color};margin-bottom:0.5rem;">${ok ? 'گزارشت درست بود' : 'گزارشت غلط بود'}</h2>
+          <p style="font-size:0.85rem;color:#6b7280;margin-bottom:1.75rem;">مظنونی که گزارش دادی: ${suspect ? suspect.name : '—'}</p>
+          <div style="text-align:right;padding:1.5rem;border:1px solid #1f2937;border-radius:0.5rem;background:rgba(0,0,0,0.4);">
+            ${text.map(p => `<p style="font-size:0.95rem;line-height:2;color:#d1d5db;white-space:pre-line;margin-bottom:1rem;">${p}</p>`).join('')}
+          </div>
+        </div>`;
+    }
+
+    function unlockTreasure() {
+      treasureStage = 'opening';
+      renderTreasure();
+      setTimeout(() => {
+        treasureStage = 'revealed';
+        renderTreasure();
+      }, 2000);
+    }
+
+    function openVideoLightbox(src) {
+      if (!src) return;
+      const box = document.getElementById('video-lightbox');
+      const player = document.getElementById('video-lightbox-player');
+      player.src = src;
+      box.classList.remove('hidden');
+      // ری‌فلو اجباری تا انیمیشن هر بار از نو اجرا شود (مثل باز شدن ویدیو در تلگرام)
+      void box.offsetWidth;
+      box.classList.add('tg-opening');
+      player.play().catch(() => {});
+    }
+
+    function closeVideoLightbox() {
+      const box = document.getElementById('video-lightbox');
+      const player = document.getElementById('video-lightbox-player');
+      player.pause();
+      player.removeAttribute('src');
+      player.load();
+      box.classList.add('hidden');
+      box.classList.remove('tg-opening');
+    }
+
+    // تک‌کلیک روی کارت ویدیو در چت = باز شدن مثل تلگرام
+    // از capture استفاده می‌کنیم چون داخل مودال گوشی روی کلیک stopPropagation صدا زده می‌شود
+    document.addEventListener('click', function (e) {
+      const card = e.target.closest('.chat-video-card');
+      if (!card) return;
+      const src = card.getAttribute('data-video-src');
+      if (src) openVideoLightbox(src);
+    }, true);
+
+    // شروع
+    startIntro();
+  </script>
+</body>
+</html>
